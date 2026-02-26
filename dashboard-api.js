@@ -3,7 +3,7 @@ const API = {
     // تغيير الرابط حسب البيئة
     baseUrl: window.location.hostname === 'localhost' 
         ? 'http://localhost:3000' 
-        : 'https://your-site-name.netlify.app/.netlify/functions/api',
+        : 'https://superb-belekoy-ebabc2.netlify.app/.netlify/functions/api',
     
     async get(endpoint) {
         try {
