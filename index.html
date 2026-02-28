@@ -641,82 +641,115 @@
       imageUpload.click();
     });
 
-    imageUpload.addEventListener('change', async function(e) {
-      const file = e.target.files[0];
-      if (!file) return;
+// البحث عن وظيفة الرفع imageUpload.addEventListener وتحديث الجزء الداخلي منها
+imageUpload.addEventListener('change', async function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  // التحقق من نوع وحجم الملف
+  if (!file.type.startsWith('image/')) {
+    alert('الرجاء اختيار صورة فقط');
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = async function(event) {
+    const base64Data = event.target.result;
+    
+    // إظهار المعاينة الأولية والتقدم
+    previewImg.src = base64Data;
+    uploadPreview.style.display = 'flex';
+    uploadProgress.style.display = 'block';
+    progressBar.style.width = '30%';
+    progressText.textContent = 'جاري الرفع إلى Drive...';
+    
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'uploadImage',
+          imageData: base64Data, // نرسل الـ Base64 كاملاً
+          fileName: file.name
+        })
+      });
       
-      if (!file.type.startsWith('image/')) {
-        alert('الرجاء اختيار صورة فقط');
-        return;
-      }
+      const data = await response.json();
       
-      if (file.size > 5 * 1024 * 1024) {
-        alert('الصورة كبيرة جداً. الحد الأقصى 5 ميجابايت');
-        return;
-      }
-      
-      // عرض معاينة الصورة
-      const reader = new FileReader();
-      reader.onload = async function(event) {
-        const base64Data = event.target.result;
+      if (data.success) {
+        progressBar.style.width = '100%';
+        progressText.textContent = 'تم الرفع بنجاح!';
         
-        // عرض المعاينة
-        previewImg.src = base64Data;
-        uploadPreview.style.display = 'flex';
+        // --- هذا هو التعديل الأهم ---
+        imageUrlInput.value = data.imageUrl; // الرابط المباشر من السكربت
+        finalImageUrl.value = data.imageUrl; // تحديث الحقل المخفي
         
-        // إظهار شريط التقدم
-        uploadProgress.style.display = 'block';
-        progressBar.style.width = '30%';
-        progressText.textContent = 'جاري الرفع إلى Drive...';
+        // تحديث صورة المعاينة بالرابط الحقيقي
+        currentImage.src = data.imageUrl;
+        currentImageContainer.style.display = 'block';
+        uploadPreview.style.display = 'none';
         
-        try {
-          // إرسال الصورة إلى السكربت
-          const response = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-              action: 'uploadImage',
-              imageData: base64Data,
-              fileName: file.name
-            })
-          });
-          
-          progressBar.style.width = '70%';
-          progressText.textContent = 'جاري المعالجة...';
-          
-          const data = await response.json();
-          
-          if (data.success) {
-            progressBar.style.width = '100%';
-            progressText.textContent = 'تم بنجاح!';
-            
-            setTimeout(() => {
-              uploadProgress.style.display = 'none';
-              
-              // حفظ الرابط مباشرة بدون الحاجة للنسخ
-              imageUrlInput.value = data.imageUrl;
-              finalImageUrl.value = data.imageUrl;
-              
-              // إخفاء قسم الرفع وإظهار الصورة الحالية
-              uploadPreview.style.display = 'none';
-              currentImage.src = data.imageUrl;
-              currentImageContainer.style.display = 'block';
-              
-              showToast('✅ تم رفع الصورة بنجاح', 'success');
-            }, 500);
-          } else {
-            throw new Error(data.error || 'فشل الرفع');
-          }
-        } catch (error) {
-          console.error(error);
-          progressBar.style.width = '0%';
-          progressText.textContent = 'فشل الرفع';
+        setTimeout(() => {
           uploadProgress.style.display = 'none';
-          alert('فشل رفع الصورة: ' + error.message);
-        }
-      };
-      
-      reader.readAsDataURL(file);
+        }, 1500);
+
+        showToast('✅ تم رفع الصورة بنجاح', 'success');
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (error) {
+      console.error(error);
+      uploadProgress.style.display = 'none';
+      alert('حدث خطأ أثناء الرفع: ' + error.message);
+    }
+  };
+  reader.readAsDataURL(file);
+});
+
+// تعديل وظيفة حفظ البيانات (Submit) لضمان أخذ الرابط الصحيح
+itemForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const rowIndex = document.getElementById('rowIndex').value;
+  // تأكد من أخذ الرابط من الحقل الذي استقبل نتيجة الرفع
+  const imageToSave = finalImageUrl.value || imageUrlInput.value;
+
+  const formData = {
+    category: document.getElementById('category').value,
+    item_id: document.getElementById('item_id').value,
+    name: document.getElementById('name').value,
+    description: document.getElementById('description').value,
+    price: Number(document.getElementById('price').value),
+    currency: document.getElementById('currency').value,
+    image_url: imageToSave, // الرابط النهائي
+    available: document.getElementById('available').checked,
+    featured: document.getElementById('featured').checked,
+    sort: Number(document.getElementById('sort').value)
+  };
+  
+  // بقية كود الإرسال كما هو...
+  if (rowIndex) formData.rowIndex = Number(rowIndex);
+  
+  try {
+    showToast('جاري الحفظ...', 'success');
+    const response = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: rowIndex ? 'update' : 'add',
+        item: formData
+      })
     });
+    const data = await response.json();
+    if (data.success) {
+      showToast(data.message, 'success');
+      closeModal();
+      loadItems();
+    } else {
+      showToast(data.error || 'حدث خطأ', 'error');
+    }
+  } catch (error) {
+    showToast('فشل الاتصال بالخادم', 'error');
+  }
+});
 
     function removeCurrentImage() {
       currentImageContainer.style.display = 'none';
@@ -976,4 +1009,5 @@
     loadItems();
   </script>
 </body>
+
 </html>
