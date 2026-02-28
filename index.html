@@ -351,6 +351,259 @@
       .sidebar__logo span, .nav-item span, .preview-btn span { display: none; }
       .main-content { margin-right: 80px; }
     }
+          /* تحسينات إضافية للجوال */
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 70px;
+          position: fixed;
+          z-index: 100;
+        }
+        
+        .sidebar__logo {
+          padding: 1rem 0.5rem;
+          justify-content: center;
+        }
+        
+        .sidebar__logo img {
+          height: 35px;
+        }
+        
+        .nav-item {
+          padding: 0.8rem 0;
+          justify-content: center;
+        }
+        
+        .nav-item svg {
+          width: 22px;
+          height: 22px;
+        }
+        
+        .sidebar__footer {
+          padding: 1rem 0.5rem;
+        }
+        
+        .preview-btn {
+          padding: 0.6rem;
+        }
+        
+        .preview-btn svg {
+          width: 20px;
+          height: 20px;
+        }
+        
+        .main-content {
+          margin-right: 70px;
+          padding: 1rem;
+        }
+        
+        .content-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1rem;
+          margin-bottom: 1.5rem;
+        }
+        
+        .page-title {
+          font-size: 1.5rem;
+        }
+        
+        .header-actions {
+          width: 100%;
+        }
+        
+        .btn {
+          padding: 0.6rem 1rem;
+          font-size: 0.9rem;
+          width: 100%;
+          justify-content: center;
+        }
+        
+        .table-container {
+          overflow-x: auto;
+          border-radius: 16px;
+        }
+        
+        .data-table {
+          min-width: 800px;
+        }
+        
+        .data-table th,
+        .data-table td {
+          padding: 0.8rem;
+          font-size: 0.9rem;
+        }
+        
+        .item-image {
+          width: 40px;
+          height: 40px;
+        }
+        
+        .modal__panel {
+          width: 96%;
+          max-height: 95vh;
+        }
+        
+        .modal__head {
+          padding: 1rem;
+        }
+        
+        .modal__form {
+          padding: 1rem;
+        }
+        
+        .form-grid {
+          grid-template-columns: 1fr;
+          gap: 0.8rem;
+        }
+        
+        .form-group.full-width {
+          grid-column: span 1;
+        }
+        
+        .form-control {
+          padding: 0.7rem 0.9rem;
+          font-size: 0.9rem;
+        }
+        
+        #category + .btn-secondary {
+          padding: 0.7rem !important;
+        }
+        
+        .image-preview-box {
+          width: 70px;
+          height: 70px;
+        }
+        
+        .modal__footer {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+        
+        .modal__footer .btn {
+          width: 100%;
+          margin: 0;
+        }
+        
+        .action-buttons {
+          flex-direction: column;
+        }
+        
+        .action-btn {
+          padding: 0.3rem;
+        }
+        
+        .toast {
+          width: 90%;
+          padding: 0.8rem 1rem;
+          font-size: 0.9rem;
+        }
+      }
+
+      /* تحسينات للشاشات الصغيرة جداً */
+      @media (max-width: 480px) {
+        .sidebar {
+          width: 60px;
+        }
+        
+        .main-content {
+          margin-right: 60px;
+          padding: 0.8rem;
+        }
+        
+        .page-title {
+          font-size: 1.3rem;
+        }
+        
+        .btn {
+          padding: 0.5rem 0.8rem;
+          font-size: 0.85rem;
+        }
+        
+        .btn svg {
+          width: 16px;
+          height: 16px;
+        }
+        
+        .modal__title {
+          font-size: 1.1rem;
+        }
+        
+        .form-group label {
+          font-size: 0.85rem;
+        }
+        
+        .small-text {
+          font-size: 0.75rem;
+        }
+        
+        #uploadSection .btn-primary {
+          font-size: 0.8rem;
+          padding: 0.6rem;
+        }
+        
+        .image-preview-box {
+          width: 60px;
+          height: 60px;
+        }
+      }
+
+      /* تحسينات للوضع الأفقي على الجوال */
+      @media (max-height: 500px) and (orientation: landscape) {
+        .modal__panel {
+          max-height: 85vh;
+        }
+        
+        .modal__form {
+          max-height: 70vh;
+          overflow-y: auto;
+        }
+        
+        .form-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        
+        .sidebar {
+          overflow-y: auto;
+        }
+      }
+
+      /* تحسين ظهور العناصر عند اللمس */
+      @media (hover: none) and (pointer: coarse) {
+        .nav-item:hover,
+        .nav-item.active {
+          background: var(--gold-light);
+        }
+        
+        .btn:hover {
+          transform: none;
+        }
+        
+        .action-btn:hover {
+          background: transparent;
+          color: var(--text-muted);
+          border-color: var(--border);
+        }
+        
+        .action-btn:active {
+          background: var(--surface-light);
+          color: var(--gold);
+        }
+        
+        .btn-primary:active {
+          background: var(--gold);
+          transform: scale(0.98);
+        }
+        
+        .preview-btn:active {
+          background: var(--border);
+          color: var(--gold);
+        }
+        
+        .modal__close:active {
+          background: var(--border);
+          transform: scale(0.9);
+        }
+      }
   </style>
 </head>
 <body>
@@ -1024,6 +1277,7 @@
   </script>
 </body>
 </html>
+
 
 
 
