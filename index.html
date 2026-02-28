@@ -825,7 +825,7 @@
         html += `
           <tr>
             <td>${index + 1}</td>
-            <td><img src="${imageUrl}" class="item-image" onerror="this.src='https://via.placeholder.com/50/f1f4f9/64748b?text=صورة'" loading="lazy"></td>
+            <td><img src="${fixImageUrl(imageUrl)}" class="item-image" onerror="this.src='https://via.placeholder.com/50/f1f4f9/64748b?text=صورة'" loading="lazy"></td>
             <td>${item.name || '-'}</td>
             <td>${item.category || '-'}</td>
             <td>${item.price || 0} ${item.currency || 'SYP'}</td>
@@ -993,6 +993,20 @@
       setTimeout(() => toast.classList.add('show'), 10);
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
+    function fixImageUrl(url) {
+  if (!url) return "https://via.placeholder.com/300";
+
+  // Google Drive تحويل تلقائي
+  if (url.includes("drive.google.com")) {
+    const idMatch = url.match(/[-\\w]{25,}/);
+    if (idMatch) {
+      return "https://lh3.googleusercontent.com/d/" + idMatch[0];
+    }
+  }
+
+  // Proxy لأي موقع (حل مشكلة عدم عرض الصور)
+  return "https://images.weserv.nl/?url=" + encodeURIComponent(url);
+}
 
     document.querySelector('#itemModal .modal__overlay').addEventListener('click', closeModal);
     document.querySelectorAll('.nav-item').forEach(link => {
@@ -1010,6 +1024,7 @@
   </script>
 </body>
 </html>
+
 
 
 
