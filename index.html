@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MenuFlow • لوحة التحكم</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8f9fc;
+      --surface: #ffffff;
+      --surface-light: #f1f4f9;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --gold: #fbbf24;
+      --gold-light: rgba(251, 191, 36, 0.1);
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --success: #10b981;
+      --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .dashboard { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 260px;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .sidebar__logo {
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar__logo img { height: 40px; width: auto; }
+    .sidebar__logo span { font-size: 1.2rem; font-weight: 600; color: var(--gold); }
+    .sidebar__nav { flex: 1; padding: 1.5rem 0; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.8rem 1.5rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.2s;
+      border-right: 3px solid transparent;
+    }
+    .nav-item:hover, .nav-item.active {
+      background: var(--gold-light);
+      color: var(--gold);
+      border-right-color: var(--gold);
+    }
+    .nav-item svg { stroke: currentColor; }
+    .sidebar__footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .preview-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.8rem;
+      background: var(--surface-light);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .preview-btn:hover { background: var(--border); color: var(--gold); }
+    .main-content {
+      flex: 1;
+      margin-right: 260px;
+      padding: 2rem;
+    }
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .page-title { font-size: 1.8rem; font-weight: 600; color: var(--text); }
+    .header-actions { display: flex; gap: 1rem; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-family: 'Cairo', sans-serif;
+    }
+    .btn-primary {
+      background: var(--text);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--gold);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -10px var(--gold);
+    }
+    .btn-secondary {
+      background: var(--surface-light);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-secondary:hover { background: var(--border); }
+    .table-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .data-table th {
+      background: var(--surface-light);
+      padding: 1rem;
+      text-align: right;
+      font-weight: 600;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tbody tr:hover { background: var(--surface-light); }
+    .item-image {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .status-available { background: var(--gold-light); color: var(--gold); }
+    .status-unavailable { background: var(--danger-light); color: var(--danger); }
+    .featured-badge { color: var(--gold); }
+    .action-buttons { display: flex; gap: 0.5rem; }
+    .action-btn {
+      padding: 0.4rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .action-btn:hover {
+      background: var(--surface-light);
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+    .action-btn.delete:hover {
+      background: var(--danger-light);
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+    .loading-row {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-muted);
+    }
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      z-index: 2000;
+    }
+    .modal[aria-hidden="false"] { display: block; }
+    .modal__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+    }
+    .modal__panel {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(700px, 94%);
+      background: var(--surface);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal__head {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      border-radius: 24px 24px 0 0;
+    }
+    .modal__title { font-size: 1.3rem; font-weight: 600; color: var(--text); }
+    .modal__close {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface-light);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .modal__close:hover {
+      background: var(--border);
+      color: var(--text);
+      transform: rotate(90deg);
+    }
+    .modal__form { padding: 1.5rem; }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form-group { margin-bottom: 1rem; }
+    .form-group.full-width { grid-column: span 2; }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface-light);
+      color: var(--text);
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px var(--gold-light);
+    }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+    .checkbox-label input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+    .modal__footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .image-preview-box {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      border: 2px dashed var(--border);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-light);
+    }
+    .image-preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .image-preview-box .placeholder {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-align: center;
+    }
+    .small-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 2rem;
+      box-shadow: var(--shadow);
+      z-index: 9999;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    .toast.success { background: var(--success); color: white; }
+    .toast.error { background: var(--danger); color: white; }
+    @media (max-width: 768px) {
+      .sidebar { width: 80px; }
+      .sidebar__logo span, .nav-item span, .preview-btn span { display: none; }
+      .main-content { margin-right: 80px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="sidebar__logo">
+        <img src="logo_kit.png" alt="MenuFlow" onerror="this.src='https://via.placeholder.com/40x40/fbbf24/1e293b?text=MF'">
+        <span>MenuFlow</span>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="#" class="nav-item active" data-page="items">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+          </svg>
+          <span>الوجبات</span>
+        </a>
+        <a href="#" class="nav-item" data-page="categories">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+          </svg>
+          <span>التصنيفات</span>
+        </a>
+        <a href="#" class="nav-item" data-page="settings">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H5.78a1.65 1.65 0 0 0-1.51 1 1.65 1.65 0 0 0 .33 1.82l.07.07A10 10 0 0 0 12 17.66a10 10 0 0 0 6.26-2.59l.07-.07z"/>
+          </svg>
+          <span>الإعدادات</span>
+        </a>
+      </nav>
+      <div class="sidebar__footer">
+        <a href="index.html" target="_blank" class="preview-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          <span>معاينة الموقع</span>
+        </a>
+      </div>
+    </aside>
+    
+    <main class="main-content">
+      <header class="content-header">
+        <h1 class="page-title">إدارة الوجبات</h1>
+        <div class="header-actions">
+          <button class="btn btn-primary" id="addItemBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span>إضافة وجبة</span>
+          </button>
+        </div>
+      </header>
+      
+      <div class="table-container">
+        <table class="data-table" id="itemsTable">
+          <thead>
+            <tr>
+              <th>#</th><th>الصورة</th><th>الاسم</th><th>التصنيف</th><th>السعر</th><th>متاح</th><th>مميز</th><th>الترتيب</th><th>الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"><tr><td colspan="9" class="loading-row">جاري التحميل...</td></tr></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+  
+  <!-- نافذة إضافة/تعديل وجبة -->
+  <div id="itemModal" class="modal">
+    <div class="modal__overlay"></div>
+    <div class="modal__panel">
+      <div class="modal__head">
+        <h3 class="modal__title" id="modalTitle">إضافة وجبة جديدة</h3>
+        <button class="modal__close" onclick="closeModal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      
+      <form id="itemForm" class="modal__form">
+        <input type="hidden" id="rowIndex" name="rowIndex">
+        <input type="hidden" id="final_image_url" name="image_url">
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label>التصنيف</label>
+            <div style="display: flex; gap: 5px;">
+              <select id="category" class="form-control" required style="flex: 1;">
+                <option value="">اختر التصنيف</option>
+              </select>
+              <button type="button" id="addCategoryBtn" class="btn btn-secondary" style="padding: 0.8rem 1rem;" title="إضافة تصنيف جديد">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>معرف العنصر</label>
+            <input type="text" id="item_id" class="form-control" required>
+          </div>
+          
+          <div class="form-group full-width">
+            <label>اسم الوجبة</label>
+            <input type="text" id="name" class="form-control" required>
+          </div>
+          
+          <div class="form-group full-width">
+            <label>الوصف</label>
+            <textarea id="description" class="form-control" rows="3"></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label>السعر</label>
+            <input type="number" id="price" class="form-control" required>
+          </div>
+          
+          <div class="form-group">
+            <label>العملة</label>
+            <select id="currency" class="form-control">
+              <option value="SYP">ل.س</option>
+              <option value="USD">$</option>
+            </select>
+          </div>
+          
+          <!-- قسم الصور - رفع مباشر إلى Drive -->
+          <div class="form-group full-width">
+            <label>صورة الوجبة</label>
+            
+            <div style="margin-bottom: 15px;">
+              <label style="display: inline-flex; align-items: center; gap: 10px; margin-left: 20px;">
+                <input type="radio" name="imageOption" value="url" checked onchange="toggleImageOption('url')"> رابط مباشر
+              </label>
+              <label style="display: inline-flex; align-items: center; gap: 10px;">
+                <input type="radio" name="imageOption" value="upload" onchange="toggleImageOption('upload')"> رفع إلى Drive
+              </label>
+            </div>
+            
+            <div id="urlSection">
+              <input type="url" id="image_url" class="form-control" placeholder="https://example.com/image.jpg" dir="ltr">
+              <div class="small-text">📌 مثال: https://i.imgur.com/abc123.jpg</div>
+            </div>
+            
+            <div id="uploadSection" style="display: none;">
+              <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                <div style="flex: 1;">
+                  <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                  <button type="button" id="uploadImageBtn" class="btn btn-primary" style="width: 100%;">
+                    📤 اختر صورة وسيتم رفعها تلقائياً
+                  </button>
+                </div>
+                <div class="image-preview-box" id="uploadPreview" style="display: none;">
+                  <img id="previewImg" src="" alt="معاينة">
+                </div>
+              </div>
+              
+              <div id="uploadProgress" style="margin-top: 10px; display: none;">
+                <div style="height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;">
+                  <div id="progressBar" style="width: 0%; height: 100%; background: var(--gold); transition: width 0.3s;"></div>
+                </div>
+                <div id="progressText" style="text-align: center; margin-top: 5px; font-size: 0.8rem; color: var(--text-muted);">جاري الرفع إلى Drive...</div>
+              </div>
+              
+              <div class="small-text" style="margin-top: 10px; color: var(--gold);">
+                ⚡ الصورة ترفع مباشرة إلى Google Drive وتصير رابط دائم
+              </div>
+            </div>
+            
+            <div id="currentImageContainer" style="margin-top: 15px; display: none;">
+              <div style="display: flex; gap: 15px; align-items: center;">
+                <div class="image-preview-box" style="width: 60px; height: 60px;">
+                  <img id="currentImage" src="" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div>
+                  <div style="font-weight: 500;">الصورة الحالية</div>
+                  <button type="button" class="btn btn-secondary" style="padding: 0.3rem 1rem; font-size: 0.8rem;" onclick="removeCurrentImage()">إزالة</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="available" checked> <span>متاح</span>
+            </label>
+          </div>
+          
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="featured"> <span>مميز</span>
+            </label>
+          </div>
+          
+          <div class="form-group">
+            <label>ترتيب العرض</label>
+            <input type="number" id="sort" class="form-control" value="999">
+          </div>
+        </div>
+        
+        <div class="modal__footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">إلغاء</button>
+          <button type="submit" class="btn btn-primary">حفظ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- نافذة إضافة تصنيف جديد -->
+  <div id="categoryModal" class="modal">
+    <div class="modal__overlay" onclick="closeCategoryModal()"></div>
+    <div class="modal__panel" style="width: min(400px, 94%);">
+      <div class="modal__head">
+        <h3 class="modal__title">إضافة تصنيف جديد</h3>
+        <button class="modal__close" onclick="closeCategoryModal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal__form">
+        <div class="form-group">
+          <label>اسم التصنيف الجديد</label>
+          <input type="text" id="newCategoryName" class="form-control" placeholder="مثال: مشروبات ساخنة">
+        </div>
+        <div class="modal__footer" style="margin-top: 1rem;">
+          <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">إلغاء</button>
+          <button type="button" class="btn btn-primary" onclick="addNewCategory()">إضافة</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =======================
+    // الإعدادات
+    // =======================
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyazAykybARe6zygVIo2vRVTqrXuUEiUr85PDoB5FwYxDwQjEiopaHtnDjM93LX-8Rwlg/exec';
+    
+    // =======================
+    // الحالة
+    // =======================
+    let items = [];
+    let categories = [];
+
+    // =======================
+    // العناصر
+    // =======================
+    const tableBody = document.getElementById('tableBody');
+    const addItemBtn = document.getElementById('addItemBtn');
+    const itemModal = document.getElementById('itemModal');
+    const itemForm = document.getElementById('itemForm');
+    const modalTitle = document.getElementById('modalTitle');
+    const categorySelect = document.getElementById('category');
+    
+    // عناصر الصور
+    const imageUrlInput = document.getElementById('image_url');
+    const finalImageUrl = document.getElementById('final_image_url');
+    const urlSection = document.getElementById('urlSection');
+    const uploadSection = document.getElementById('uploadSection');
+    const uploadBtn = document.getElementById('uploadImageBtn');
+    const imageUpload = document.getElementById('imageUpload');
+    const uploadPreview = document.getElementById('uploadPreview');
+    const previewImg = document.getElementById('previewImg');
+    const uploadProgress = document.getElementById('uploadProgress');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const currentImageContainer = document.getElementById('currentImageContainer');
+    const currentImage = document.getElementById('currentImage');
+    
+    // عناصر التصنيف
+    const addCategoryBtn = document.getElementById('addCategoryBtn');
+    const categoryModal = document.getElementById('categoryModal');
+    const newCategoryName = document.getElementById('newCategoryName');
+
+    // =======================
+    // دوال الصور - رفع مباشر إلى Drive
+    // =======================
+    function toggleImageOption(option) {
+      urlSection.style.display = option === 'url' ? 'block' : 'none';
+      uploadSection.style.display = option === 'upload' ? 'block' : 'none';
+    }
+
+    uploadBtn.addEventListener('click', () => {
+      imageUpload.click();
+    });
+
+    imageUpload.addEventListener('change', async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      if (!file.type.startsWith('image/')) {
+        alert('الرجاء اختيار صورة فقط');
+        return;
+      }
+      
+      if (file.size > 5 * 1024 * 1024) {
+        alert('الصورة كبيرة جداً. الحد الأقصى 5 ميجابايت');
+        return;
+      }
+      
+      // عرض معاينة الصورة
+      const reader = new FileReader();
+      reader.onload = async function(event) {
+        const base64Data = event.target.result;
+        
+        // عرض المعاينة
+        previewImg.src = base64Data;
+        uploadPreview.style.display = 'flex';
+        
+        // إظهار شريط التقدم
+        uploadProgress.style.display = 'block';
+        progressBar.style.width = '30%';
+        progressText.textContent = 'جاري الرفع إلى Drive...';
+        
+        try {
+          // إرسال الصورة إلى السكربت
+          const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+              action: 'uploadImage',
+              imageData: base64Data,
+              fileName: file.name
+            })
+          });
+          
+          progressBar.style.width = '70%';
+          progressText.textContent = 'جاري المعالجة...';
+          
+          const data = await response.json();
+          
+          if (data.success) {
+            progressBar.style.width = '100%';
+            progressText.textContent = 'تم بنجاح!';
+            
+            setTimeout(() => {
+              uploadProgress.style.display = 'none';
+              
+              // حفظ الرابط مباشرة بدون الحاجة للنسخ
+              imageUrlInput.value = data.imageUrl;
+              finalImageUrl.value = data.imageUrl;
+              
+              // إخفاء قسم الرفع وإظهار الصورة الحالية
+              uploadPreview.style.display = 'none';
+              currentImage.src = data.imageUrl;
+              currentImageContainer.style.display = 'block';
+              
+              showToast('✅ تم رفع الصورة بنجاح', 'success');
+            }, 500);
+          } else {
+            throw new Error(data.error || 'فشل الرفع');
+          }
+        } catch (error) {
+          console.error(error);
+          progressBar.style.width = '0%';
+          progressText.textContent = 'فشل الرفع';
+          uploadProgress.style.display = 'none';
+          alert('فشل رفع الصورة: ' + error.message);
+        }
+      };
+      
+      reader.readAsDataURL(file);
+    });
+
+    function removeCurrentImage() {
+      currentImageContainer.style.display = 'none';
+      finalImageUrl.value = '';
+      imageUrlInput.value = '';
+      showToast('تم إزالة الصورة', 'success');
+    }
+
+    // =======================
+    // إضافة تصنيف جديد
+    // =======================
+    addCategoryBtn.addEventListener('click', () => {
+      categoryModal.style.display = 'block';
+      newCategoryName.value = '';
+    });
+
+    function closeCategoryModal() {
+      categoryModal.style.display = 'none';
+    }
+
+    function addNewCategory() {
+      const newCat = newCategoryName.value.trim();
+      if (!newCat) {
+        alert('الرجاء إدخال اسم التصنيف');
+        return;
+      }
+      
+      const option = document.createElement('option');
+      option.value = newCat;
+      option.textContent = newCat;
+      option.selected = true;
+      categorySelect.appendChild(option);
+      
+      closeCategoryModal();
+      showToast('تم إضافة التصنيف: ' + newCat, 'success');
+    }
+
+    // =======================
+    // تحميل البيانات
+    // =======================
+    async function loadItems() {
+      try {
+        tableBody.innerHTML = '<tr><td colspan="9" class="loading-row">جاري التحميل...</td></tr>';
+        
+        const response = await fetch(SCRIPT_URL);
+        const data = await response.json();
+        
+        console.log('البيانات المستلمة:', data);
+        
+        if (data.error) throw new Error(data.error);
+        
+        items = data;
+        renderTable();
+        loadCategories();
+        
+      } catch (error) {
+        console.error('خطأ في التحميل:', error);
+        showToast('خطأ في تحميل البيانات', 'error');
+        tableBody.innerHTML = '<tr><td colspan="9" class="loading-row">فشل التحميل</td></tr>';
+      }
+    }
+
+    function loadCategories() {
+      const uniqueCategories = [...new Set(items.map(item => item.category))];
+      categories = uniqueCategories.filter(cat => cat && cat.trim() !== '');
+      
+      categorySelect.innerHTML = '<option value="">اختر التصنيف</option>';
+      categories.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat;
+        categorySelect.appendChild(option);
+      });
+    }
+
+    function renderTable() {
+      if (!items || items.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="9" class="loading-row">لا توجد بيانات</td></tr>';
+        return;
+      }
+      
+      let html = '';
+      items.forEach((item, index) => {
+        const imageUrl = item.image_url || 'https://via.placeholder.com/50/f1f4f9/64748b?text=صورة';
+        
+        html += `
+          <tr>
+            <td>${index + 1}</td>
+            <td><img src="${imageUrl}" class="item-image" onerror="this.src='https://via.placeholder.com/50/f1f4f9/64748b?text=صورة'"></td>
+            <td>${item.name || '-'}</td>
+            <td>${item.category || '-'}</td>
+            <td>${item.price || 0} ${item.currency || 'SYP'}</td>
+            <td><span class="status-badge ${item.available ? 'status-available' : 'status-unavailable'}">${item.available ? 'متاح' : 'غير متاح'}</span></td>
+            <td>${item.featured ? '<span class="featured-badge">⭐ مميز</span>' : '-'}</td>
+            <td>${item.sort || 999}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn" onclick="editItem(${item.rowIndex || (index + 2)})">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                  </svg>
+                </button>
+                <button class="action-btn delete" onclick="deleteItem(${item.rowIndex || (index + 2)})">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+      tableBody.innerHTML = html;
+    }
+
+    function openAddModal() {
+      modalTitle.textContent = 'إضافة وجبة جديدة';
+      itemForm.reset();
+      document.getElementById('rowIndex').value = '';
+      finalImageUrl.value = '';
+      imageUrlInput.value = '';
+      currentImageContainer.style.display = 'none';
+      uploadPreview.style.display = 'none';
+      uploadProgress.style.display = 'none';
+      imageUpload.value = '';
+      toggleImageOption('url');
+      itemModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function editItem(rowIndex) {
+      const item = items.find(i => i.rowIndex === rowIndex);
+      if (!item) return;
+      
+      modalTitle.textContent = 'تعديل الوجبة';
+      
+      document.getElementById('rowIndex').value = rowIndex;
+      document.getElementById('category').value = item.category || '';
+      document.getElementById('item_id').value = item.item_id || '';
+      document.getElementById('name').value = item.name || '';
+      document.getElementById('description').value = item.description || '';
+      document.getElementById('price').value = item.price || 0;
+      document.getElementById('currency').value = item.currency || 'SYP';
+      document.getElementById('available').checked = item.available !== false;
+      document.getElementById('featured').checked = item.featured === true;
+      document.getElementById('sort').value = item.sort || 999;
+      
+      if (item.image_url) {
+        currentImage.src = item.image_url;
+        currentImageContainer.style.display = 'block';
+        imageUrlInput.value = item.image_url;
+        finalImageUrl.value = item.image_url;
+      } else {
+        currentImageContainer.style.display = 'none';
+      }
+      
+      uploadPreview.style.display = 'none';
+      toggleImageOption('url');
+      itemModal.setAttribute('aria-hidden', 'false');
+    }
+
+    async function deleteItem(rowIndex) {
+      if (!confirm('هل أنت متأكد من الحذف؟')) return;
+      
+      try {
+        showToast('جاري الحذف...', 'success');
+        
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'delete', rowIndex })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          showToast('تم الحذف بنجاح', 'success');
+          loadItems();
+        } else {
+          showToast(data.error || 'حدث خطأ', 'error');
+        }
+      } catch (error) {
+        showToast('فشل الاتصال بالخادم', 'error');
+      }
+    }
+
+    itemForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const rowIndex = document.getElementById('rowIndex').value;
+      const formData = {
+        category: document.getElementById('category').value,
+        item_id: document.getElementById('item_id').value,
+        name: document.getElementById('name').value,
+        description: document.getElementById('description').value,
+        price: Number(document.getElementById('price').value),
+        currency: document.getElementById('currency').value,
+        image_url: finalImageUrl.value || imageUrlInput.value,
+        available: document.getElementById('available').checked,
+        featured: document.getElementById('featured').checked,
+        sort: Number(document.getElementById('sort').value)
+      };
+      
+      if (rowIndex) formData.rowIndex = Number(rowIndex);
+      
+      try {
+        showToast('جاري الحفظ...', 'success');
+        
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: rowIndex ? 'update' : 'add',
+            item: formData
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          showToast(data.message, 'success');
+          closeModal();
+          loadItems();
+        } else {
+          showToast(data.error || 'حدث خطأ', 'error');
+        }
+      } catch (error) {
+        showToast('فشل الاتصال بالخادم', 'error');
+      }
+    });
+
+    function closeModal() {
+      itemModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function showToast(message, type = 'success') {
+      let toast = document.querySelector('.toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.className = 'toast';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message;
+      toast.className = `toast ${type}`;
+      setTimeout(() => toast.classList.add('show'), 10);
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    document.querySelector('#itemModal .modal__overlay').addEventListener('click', closeModal);
+    document.querySelectorAll('.nav-item').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
+
+    addItemBtn.addEventListener('click', openAddModal);
+    loadItems();
+  </script>
+</body>
+</html>
