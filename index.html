@@ -1320,59 +1320,59 @@
     }
 
     function renderCategories() {
-      if (!categories || categories.length === 0) {
-        categoriesContainer.innerHTML = '<div class="loading-row">لا توجد تصنيفات</div>';
-        return;
-      }
+  if (!categories || categories.length === 0) {
+    categoriesContainer.innerHTML = '<div class="loading-row">لا توجد تصنيفات</div>';
+    return;
+  }
 
-      // ترتيب التصنيفات حسب sort
-      const sortedCategories = [...categories].sort((a, b) => (a.sort || 999) - (b.sort || 999));
-      
-      let html = '';
-      sortedCategories.forEach(category => {
-        // حساب عدد الوجبات في هذا التصنيف
-        const itemsCount = items.filter(item => item.category === category.name).length;
-        
-        html += `
-          <div class="category-card">
-            <div class="category-header">
-              <span class="category-name">${category.name}</span>
-            </div>
-            <div class="category-stats">
-              <div class="category-stat">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-                  <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
-                </svg>
-                <span>${itemsCount} وجبات</span>
-              </div>
-              <div class="category-stat">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                </svg>
-                <span>الترتيب: ${category.sort || 999}</span>
-              </div>
-            </div>
-            <div class="category-actions">
-              <button class="btn btn-secondary" onclick="openEditCategoryModal('${category.name}', ${category.rowIndex}, ${category.sort || 999})" style="flex: 1;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-                </svg>
-                <span>تعديل</span>
-              </button>
-              <button class="btn btn-danger" onclick="deleteCategory('${category.name}', ${category.rowIndex})" style="flex: 1;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="3 6 5 6 21 6"/>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                </svg>
-                <span>حذف</span>
-              </button>
-            </div>
+  // ترتيب التصنيفات حسب sort
+  const sortedCategories = [...categories].sort((a, b) => (a.sort || 999) - (b.sort || 999));
+  
+  let html = '';
+  sortedCategories.forEach(category => {
+    // حساب عدد الوجبات في هذا التصنيف
+    const itemsCount = items.filter(item => item.category === category.name).length;
+    
+    html += `
+      <div class="category-card">
+        <div class="category-header">
+          <span class="category-name">${category.name}</span>
+        </div>
+        <div class="category-stats">
+          <div class="category-stat">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+            </svg>
+            <span>${itemsCount} وجبات</span>
           </div>
-        `;
-      });
-      categoriesContainer.innerHTML = html;
-    }
+          <div class="category-stat">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span>الترتيب: ${category.sort || 999}</span>
+          </div>
+        </div>
+        <div class="category-actions">
+          <button class="btn btn-secondary" onclick="openEditCategoryModal('${category.name}', ${category.rowIndex}, ${category.sort || 999})" style="flex: 1;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+            </svg>
+            <span>تعديل</span>
+          </button>
+          <button class="btn btn-danger" onclick="deleteCategory('${category.name}', ${category.rowIndex})" style="flex: 1;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+            <span>حذف</span>
+          </button>
+        </div>
+      </div>
+    `;
+  });
+  categoriesContainer.innerHTML = html;
+}
 
     function openEditCategoryModal(name, rowIndex, sort) {
       editingOldCategoryName.value = name;
@@ -1572,34 +1572,30 @@
     }
 
     async function loadCategories() {
-      try {
-        categoriesContainer.innerHTML = '<div class="loading-row">جاري تحميل التصنيفات...</div>';
-        
-        // جلب التصنيفات من السيرفر
-        const response = await fetch(SCRIPT_URL + '?action=categories');
-        const data = await response.json();
-        
-        if (data.error) throw new Error(data.error);
-        
-        categories = Array.isArray(data) ? data : [];
-        
-        // تحديث قائمة التصنيفات في نموذج الوجبات
-        updateCategorySelect();
-        
-        // عرض التصنيفات إذا كنا في صفحة التصنيفات
-        if (!categoriesPage.classList.contains('hidden-page')) {
-          renderCategories();
-        } else {
-          // حتى لو مش في الصفحة، نحدث المحتوى
-          renderCategories();
-        }
-        
-      } catch (error) {
-        console.error('خطأ في تحميل التصنيفات:', error);
-        categoriesContainer.innerHTML = '<div class="loading-row">فشل تحميل التصنيفات</div>';
-      }
-    }
-
+  try {
+    categoriesContainer.innerHTML = '<div class="loading-row">جاري تحميل التصنيفات...</div>';
+    
+    // ✅ التصحيح: إضافة ?action=categories إلى الرابط
+    const response = await fetch(SCRIPT_URL + '?action=categories');
+    const data = await response.json();
+    
+    console.log('التصنيفات المحملة:', data); // للتأكد من البيانات
+    
+    if (data.error) throw new Error(data.error);
+    
+    categories = Array.isArray(data) ? data : [];
+    
+    // تحديث قائمة التصنيفات في نموذج الوجبات
+    updateCategorySelect();
+    
+    // عرض التصنيفات
+    renderCategories();
+    
+  } catch (error) {
+    console.error('خطأ في تحميل التصنيفات:', error);
+    categoriesContainer.innerHTML = '<div class="loading-row">فشل تحميل التصنيفات</div>';
+  }
+}
     function renderTable() {
       if (!items || items.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="9" class="loading-row">لا توجد بيانات</td></tr>';
@@ -1816,5 +1812,6 @@
   </script>
 </body>
 </html>
+
 
 
