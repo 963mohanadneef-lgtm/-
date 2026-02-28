@@ -128,6 +128,15 @@
       color: var(--text);
     }
     .btn-secondary:hover { background: var(--border); }
+    .btn-danger {
+      background: var(--danger-light);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+    .btn-danger:hover {
+      background: var(--danger);
+      color: white;
+    }
     .table-container {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -351,401 +360,451 @@
       .sidebar__logo span, .nav-item span, .preview-btn span { display: none; }
       .main-content { margin-right: 80px; }
     }
-                /* ========== تصميم متكامل للجوال ========== */
-      @media (max-width: 768px) {
-        /* تحويل الشريط الجانبي إلى شريط سفلي */
-        .dashboard {
-          flex-direction: column;
-        }
-        
-        .sidebar {
-          width: 100%;
-          height: auto;
-          position: fixed;
-          bottom: 0;
-          top: auto;
-          right: 0;
-          left: 0;
-          border-left: none;
-          border-top: 1px solid var(--border);
-          z-index: 1000;
-          background: var(--surface);
-          box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
-        }
-        
-        .sidebar__logo {
-          display: none; /* إخفاء اللوجو في الشريط السفلي */
-        }
-        
-        .sidebar__nav {
-          display: flex;
-          justify-content: space-around;
-          padding: 0.5rem;
-        }
-        
-        .nav-item {
-          flex-direction: column;
-          padding: 0.5rem;
-          gap: 0.3rem;
-          border-right: none;
-          border-bottom: 3px solid transparent;
-          font-size: 0.8rem;
-          text-align: center;
-        }
-        
-        .nav-item:hover, 
-        .nav-item.active {
-          border-right-color: transparent;
-          border-bottom-color: var(--gold);
-        }
-        
-        .nav-item svg {
-          width: 22px;
-          height: 22px;
-        }
-        
-        .sidebar__footer {
-          display: none; /* إخفاء زر المعاينة من الشريط السفلي */
-        }
-        
-        /* تعديل المحتوى الرئيسي */
-        .main-content {
-          margin-right: 0;
-          padding: 1rem;
-          padding-bottom: 85px; /* مساحة للشريط السفلي */
-          width: 100%;
-        }
-        
-        /* رأس الصفحة */
-        .content-header {
-          flex-direction: column;
-          align-items: stretch;
-          gap: 1rem;
-          margin-bottom: 1.5rem;
-          padding: 0.5rem;
-        }
-        
-        .page-title {
-          font-size: 1.8rem;
-          text-align: center;
-          color: var(--gold);
-        }
-        
-        .header-actions {
-          width: 100%;
-        }
-        
-        .btn {
-          width: 100%;
-          justify-content: center;
-          padding: 1rem;
-          font-size: 1.1rem;
-          border-radius: 15px;
-        }
-        
-        .btn-primary {
-          background: var(--gold);
-          color: var(--text);
-          font-weight: 600;
-        }
-        
-        /* تحسين عرض الجدول */
-        .table-container {
-          overflow-x: auto;
-          border-radius: 20px;
-          margin: 0.5rem 0;
-          box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-        
-        .data-table {
-          min-width: 100%;
-          border-collapse: separate;
-          border-spacing: 0;
-        }
-        
-        .data-table th {
-          background: var(--text);
-          color: white;
-          padding: 1rem 0.8rem;
-          font-size: 0.95rem;
-          white-space: nowrap;
-        }
-        
-        .data-table td {
-          padding: 1rem 0.8rem;
-          font-size: 0.95rem;
-        }
-        
-        .item-image {
-          width: 45px;
-          height: 45px;
-          border-radius: 12px;
-        }
-        
-        /* تحسين الأزرار في الجدول */
-        .action-buttons {
-          flex-direction: row;
-          gap: 0.5rem;
-        }
-        
-        .action-btn {
-          padding: 0.6rem;
-          border-radius: 10px;
-        }
-        
-        /* تحسين النوافذ المنبثقة */
-        .modal__panel {
-          width: 94%;
-          max-height: 85vh;
-          border-radius: 25px;
-        }
-        
-        .modal__head {
-          padding: 1.2rem;
-        }
-        
-        .modal__title {
-          font-size: 1.3rem;
-        }
-        
-        .modal__close {
-          width: 45px;
-          height: 45px;
-        }
-        
-        .modal__form {
-          padding: 1.2rem;
-        }
-        
-        .form-grid {
-          grid-template-columns: 1fr;
-          gap: 1rem;
-        }
-        
-        .form-group.full-width {
-          grid-column: span 1;
-        }
-        
-        .form-group label {
-          font-size: 1rem;
-          margin-bottom: 0.5rem;
-        }
-        
-        .form-control {
-          padding: 1rem;
-          font-size: 1rem;
-          border-radius: 15px;
-        }
-        
-        textarea.form-control {
-          min-height: 100px;
-        }
-        
-        /* تحسين قسم الصور */
-        #category + .btn-secondary {
-          padding: 1rem !important;
-        }
-        
-        #urlSection input {
-          padding: 1rem;
-        }
-        
-        #uploadSection .btn-primary {
-          padding: 1.2rem;
-          font-size: 1rem;
-          background: var(--gold-light);
-          color: var(--text);
-          border: 2px dashed var(--gold);
-        }
-        
-        .image-preview-box {
-          width: 100px;
-          height: 100px;
-          border-radius: 15px;
-        }
-        
-        #uploadProgress {
-          margin-top: 15px;
-        }
-        
-        #progressBar {
-          height: 8px;
-        }
-        
-        /* تحسين خيارات الصور */
-        #urlSection,
-        #uploadSection {
-          margin-top: 1rem;
-        }
-        
-        #urlSection [type="radio"],
-        #uploadSection [type="radio"] {
-          transform: scale(1.2);
-          margin-left: 0.5rem;
-        }
-        
-        /* تحسين مربعات الاختيار */
-        .checkbox-label {
-          padding: 0.5rem 0;
-        }
-        
-        .checkbox-label input[type="checkbox"] {
-          width: 22px;
-          height: 22px;
-        }
-        
-        /* تحسين أزرار النافذة */
-        .modal__footer {
-          flex-direction: column;
-          gap: 0.8rem;
-          margin-top: 1.5rem;
-        }
-        
-        .modal__footer .btn {
-          padding: 1rem;
-          font-size: 1.1rem;
-          margin: 0;
-        }
-        
-        .modal__footer .btn-secondary {
-          order: 2;
-        }
-        
-        .modal__footer .btn-primary {
-          order: 1;
-        }
-        
-        /* تحسين رسائل التنبيه */
-        .toast {
-          width: 90%;
-          padding: 1rem 1.5rem;
-          font-size: 1rem;
-          border-radius: 50px;
-          top: 20px;
-          left: 5%;
-          transform: translateX(0) translateY(-100px);
-        }
-        
-        .toast.show {
-          transform: translateX(0) translateY(0);
-        }
-        
-        /* تحسين التصنيفات */
-        #category {
-          font-size: 1rem;
-        }
-        
-        #addCategoryBtn {
-          min-width: 55px;
-        }
-        
-        /* تحسين نافذة التصنيف */
-        #categoryModal .modal__panel {
-          width: 90%;
-        }
-        
-        #categoryModal .modal__footer {
-          flex-direction: row;
-        }
-        
-        #categoryModal .btn {
-          padding: 0.8rem;
-        }
-        
-        /* إضافة زر عائم للعرض */
-        .mobile-preview-fab {
-          position: fixed;
-          bottom: 90px;
-          left: 20px;
-          z-index: 1001;
-          background: var(--gold);
-          color: var(--text);
-          width: 60px;
-          height: 60px;
-          border-radius: 30px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 5px 20px rgba(251, 191, 36, 0.5);
-          border: 2px solid white;
-          cursor: pointer;
-          transition: all 0.3s;
-        }
-        
-        .mobile-preview-fab:active {
-          transform: scale(0.95);
-        }
-        
-        .mobile-preview-fab svg {
-          width: 28px;
-          height: 28px;
-        }
+    /* ========== تصميم متكامل للجوال ========== */
+    @media (max-width: 768px) {
+      .dashboard {
+        flex-direction: column;
       }
       
-      /* تحسينات للشاشات الصغيرة جداً */
-      @media (max-width: 380px) {
-        .main-content {
-          padding: 0.8rem;
-          padding-bottom: 80px;
-        }
-        
-        .page-title {
-          font-size: 1.5rem;
-        }
-        
-        .nav-item {
-          font-size: 0.7rem;
-        }
-        
-        .nav-item svg {
-          width: 20px;
-          height: 20px;
-        }
-        
-        .data-table th,
-        .data-table td {
-          padding: 0.8rem 0.5rem;
-          font-size: 0.85rem;
-        }
-        
-        .item-image {
-          width: 40px;
-          height: 40px;
-        }
-        
-        .action-btn {
-          padding: 0.5rem;
-        }
-        
-        .modal__title {
-          font-size: 1.2rem;
-        }
-        
-        .form-control {
-          padding: 0.9rem;
-        }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        right: 0;
+        left: 0;
+        border-left: none;
+        border-top: 1px solid var(--border);
+        z-index: 1000;
+        background: var(--surface);
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
       }
       
-      /* إضافة زر المعاينة العائم (أضفه في نهاية الـ body) */
-      .mobile-preview-fab {
+      .sidebar__logo {
         display: none;
       }
       
-      @media (max-width: 768px) {
-        .mobile-preview-fab {
-          display: flex;
-        }
+      .sidebar__nav {
+        display: flex;
+        justify-content: space-around;
+        padding: 0.5rem;
       }
+      
+      .nav-item {
+        flex-direction: column;
+        padding: 0.5rem;
+        gap: 0.3rem;
+        border-right: none;
+        border-bottom: 3px solid transparent;
+        font-size: 0.8rem;
+        text-align: center;
+      }
+      
+      .nav-item:hover, 
+      .nav-item.active {
+        border-right-color: transparent;
+        border-bottom-color: var(--gold);
+      }
+      
+      .nav-item svg {
+        width: 22px;
+        height: 22px;
+      }
+      
+      .sidebar__footer {
+        display: none;
+      }
+      
+      .main-content {
+        margin-right: 0;
+        padding: 1rem;
+        padding-bottom: 85px;
+        width: 100%;
+      }
+      
+      .content-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding: 0.5rem;
+      }
+      
+      .page-title {
+        font-size: 1.8rem;
+        text-align: center;
+        color: var(--gold);
+      }
+      
+      .header-actions {
+        width: 100%;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 1rem;
+        font-size: 1.1rem;
+        border-radius: 15px;
+      }
+      
+      .btn-primary {
+        background: var(--gold);
+        color: var(--text);
+        font-weight: 600;
+      }
+      
+      .table-container {
+        overflow-x: auto;
+        border-radius: 20px;
+        margin: 0.5rem 0;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      }
+      
+      .data-table {
+        min-width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+      
+      .data-table th {
+        background: var(--text);
+        color: white;
+        padding: 1rem 0.8rem;
+        font-size: 0.95rem;
+        white-space: nowrap;
+      }
+      
+      .data-table td {
+        padding: 1rem 0.8rem;
+        font-size: 0.95rem;
+      }
+      
+      .item-image {
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+      }
+      
+      .action-buttons {
+        flex-direction: row;
+        gap: 0.5rem;
+      }
+      
+      .action-btn {
+        padding: 0.6rem;
+        border-radius: 10px;
+      }
+      
+      .modal__panel {
+        width: 94%;
+        max-height: 85vh;
+        border-radius: 25px;
+      }
+      
+      .modal__head {
+        padding: 1.2rem;
+      }
+      
+      .modal__title {
+        font-size: 1.3rem;
+      }
+      
+      .modal__close {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .modal__form {
+        padding: 1.2rem;
+      }
+      
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .form-group.full-width {
+        grid-column: span 1;
+      }
+      
+      .form-group label {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .form-control {
+        padding: 1rem;
+        font-size: 1rem;
+        border-radius: 15px;
+      }
+      
+      textarea.form-control {
+        min-height: 100px;
+      }
+      
+      #category + .btn-secondary {
+        padding: 1rem !important;
+      }
+      
+      #urlSection input {
+        padding: 1rem;
+      }
+      
+      #uploadSection .btn-primary {
+        padding: 1.2rem;
+        font-size: 1rem;
+        background: var(--gold-light);
+        color: var(--text);
+        border: 2px dashed var(--gold);
+      }
+      
+      .image-preview-box {
+        width: 100px;
+        height: 100px;
+        border-radius: 15px;
+      }
+      
+      #uploadProgress {
+        margin-top: 15px;
+      }
+      
+      #progressBar {
+        height: 8px;
+      }
+      
+      #urlSection,
+      #uploadSection {
+        margin-top: 1rem;
+      }
+      
+      #urlSection [type="radio"],
+      #uploadSection [type="radio"] {
+        transform: scale(1.2);
+        margin-left: 0.5rem;
+      }
+      
+      .checkbox-label {
+        padding: 0.5rem 0;
+      }
+      
+      .checkbox-label input[type="checkbox"] {
+        width: 22px;
+        height: 22px;
+      }
+      
+      .modal__footer {
+        flex-direction: column;
+        gap: 0.8rem;
+        margin-top: 1.5rem;
+      }
+      
+      .modal__footer .btn {
+        padding: 1rem;
+        font-size: 1.1rem;
+        margin: 0;
+      }
+      
+      .modal__footer .btn-secondary {
+        order: 2;
+      }
+      
+      .modal__footer .btn-primary {
+        order: 1;
+      }
+      
+      .toast {
+        width: 90%;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 50px;
+        top: 20px;
+        left: 5%;
+        transform: translateX(0) translateY(-100px);
+      }
+      
+      .toast.show {
+        transform: translateX(0) translateY(0);
+      }
+      
+      #category {
+        font-size: 1rem;
+      }
+      
+      #addCategoryBtn {
+        min-width: 55px;
+      }
+      
+      #categoryModal .modal__panel {
+        width: 90%;
+      }
+      
+      #categoryModal .modal__footer {
+        flex-direction: row;
+      }
+      
+      #categoryModal .btn {
+        padding: 0.8rem;
+      }
+      
+      .mobile-preview-fab {
+        position: fixed;
+        bottom: 90px;
+        left: 20px;
+        z-index: 1001;
+        background: var(--gold);
+        color: var(--text);
+        width: 60px;
+        height: 60px;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 5px 20px rgba(251, 191, 36, 0.5);
+        border: 2px solid white;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      
+      .mobile-preview-fab:active {
+        transform: scale(0.95);
+      }
+      
+      .mobile-preview-fab svg {
+        width: 28px;
+        height: 28px;
+      }
+    }
+    
+    @media (max-width: 380px) {
+      .main-content {
+        padding: 0.8rem;
+        padding-bottom: 80px;
+      }
+      
+      .page-title {
+        font-size: 1.5rem;
+      }
+      
+      .nav-item {
+        font-size: 0.7rem;
+      }
+      
+      .nav-item svg {
+        width: 20px;
+        height: 20px;
+      }
+      
+      .data-table th,
+      .data-table td {
+        padding: 0.8rem 0.5rem;
+        font-size: 0.85rem;
+      }
+      
+      .item-image {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .action-btn {
+        padding: 0.5rem;
+      }
+      
+      .modal__title {
+        font-size: 1.2rem;
+      }
+      
+      .form-control {
+        padding: 0.9rem;
+      }
+    }
+    
+    .mobile-preview-fab {
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      .mobile-preview-fab {
+        display: flex;
+      }
+    }
+    
+    /* أقسام منفصلة للتصنيفات */
+    .categories-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .category-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s;
+    }
+    
+    .category-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+      border-color: var(--gold);
+    }
+    
+    .category-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .category-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    
+    .category-stats {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+    }
+    
+    .category-stat {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .category-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .hidden-page {
+      display: none;
+    }
+    
+    .active-page {
+      display: block;
+    }
   </style>
 </head>
-    <!-- زر المعاينة العائم للجوال -->
+<body>
+  <!-- زر المعاينة العائم للجوال -->
   <a href="index.html" target="_blank" class="mobile-preview-fab" title="معاينة الموقع">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
       <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
     </svg>
   </a>
-<body>
+  
   <div class="dashboard">
     <aside class="sidebar">
       <div class="sidebar__logo">
@@ -768,658 +827,4 @@
           <span>التصنيفات</span>
         </a>
         <a href="#" class="nav-item" data-page="settings">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H5.78a1.65 1.65 0 0 0-1.51 1 1.65 1.65 0 0 0 .33 1.82l.07.07A10 10 0 0 0 12 17.66a10 10 0 0 0 6.26-2.59l.07-.07z"/>
-          </svg>
-          <span>الإعدادات</span>
-        </a>
-      </nav>
-      <div class="sidebar__footer">
-        <a href="index.html" target="_blank" class="preview-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-          </svg>
-          <span>معاينة الموقع</span>
-        </a>
-      </div>
-    </aside>
-
-    <main class="main-content">
-      <header class="content-header">
-        <h1 class="page-title">إدارة الوجبات</h1>
-        <div class="header-actions">
-          <button class="btn btn-primary" id="addItemBtn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-            <span>إضافة وجبة</span>
-          </button>
-        </div>
-      </header>
-
-      <div class="table-container">
-        <table class="data-table" id="itemsTable">
-          <thead>
-            <tr>
-              <th>#</th><th>الصورة</th><th>الاسم</th><th>التصنيف</th><th>السعر</th><th>متاح</th><th>مميز</th><th>الترتيب</th><th>الإجراءات</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"><tr><td colspan="9" class="loading-row">جاري التحميل...</td></tr></tbody>
-        </table>
-      </div>
-    </main>
-  </div>
-
-  <!-- نافذة إضافة/تعديل وجبة -->
-  <div id="itemModal" class="modal" aria-hidden="true">
-    <div class="modal__overlay"></div>
-    <div class="modal__panel">
-      <div class="modal__head">
-        <h3 class="modal__title" id="modalTitle">إضافة وجبة جديدة</h3>
-        <button class="modal__close" onclick="closeModal()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
-      </div>
-
-      <form id="itemForm" class="modal__form">
-        <input type="hidden" id="rowIndex" name="rowIndex">
-        <input type="hidden" id="final_image_url" name="image_url">
-
-        <div class="form-grid">
-          <div class="form-group">
-            <label>التصنيف</label>
-            <div style="display: flex; gap: 5px;">
-              <select id="category" class="form-control" required style="flex: 1;">
-                <option value="">اختر التصنيف</option>
-              </select>
-              <button type="button" id="addCategoryBtn" class="btn btn-secondary" style="padding: 0.8rem 1rem;" title="إضافة تصنيف جديد">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>معرف العنصر</label>
-            <input type="text" id="item_id" class="form-control">
-          </div>
-
-          <div class="form-group full-width">
-            <label>اسم الوجبة</label>
-            <input type="text" id="name" class="form-control" required>
-          </div>
-
-          <div class="form-group full-width">
-            <label>الوصف</label>
-            <textarea id="description" class="form-control" rows="3"></textarea>
-          </div>
-
-          <div class="form-group">
-            <label>السعر</label>
-            <input type="number" id="price" class="form-control" required>
-          </div>
-
-          <div class="form-group">
-            <label>العملة</label>
-            <select id="currency" class="form-control">
-              <option value="SYP">ل.س</option>
-              <option value="USD">$</option>
-            </select>
-          </div>
-
-          <!-- قسم الصور - رفع إلى Google Drive -->
-          <div class="form-group full-width">
-            <label>صورة الوجبة</label>
-
-            <div style="margin-bottom: 15px;">
-              <label style="display: inline-flex; align-items: center; gap: 10px; margin-left: 20px;">
-                <input type="radio" name="imageOption" value="url" checked onchange="toggleImageOption('url')"> رابط مباشر
-              </label>
-              <label style="display: inline-flex; align-items: center; gap: 10px;">
-                <input type="radio" name="imageOption" value="upload" onchange="toggleImageOption('upload')"> رفع إلى Drive
-              </label>
-            </div>
-
-            <div id="urlSection">
-              <input type="url" id="image_url" class="form-control" placeholder="https://example.com/image.jpg" dir="ltr">
-              <div class="small-text">📌 مثال: https://i.imgur.com/abc123.jpg</div>
-            </div>
-
-            <div id="uploadSection" style="display: none;">
-              <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
-                <div style="flex: 1;">
-                  <input type="file" id="imageUpload" accept="image/*" style="display: none;">
-                  <button type="button" id="uploadImageBtn" class="btn btn-primary" style="width: 100%;">
-                    📤 اختر صورة وسيتم رفعها إلى Drive
-                  </button>
-                </div>
-                <div class="image-preview-box" id="uploadPreview" style="display: none;">
-                  <img id="previewImg" src="" alt="معاينة">
-                </div>
-              </div>
-
-              <div id="uploadProgress" style="margin-top: 10px; display: none;">
-                <div style="height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;">
-                  <div id="progressBar" style="width: 0%; height: 100%; background: var(--gold); transition: width 0.3s;"></div>
-                </div>
-                <div id="progressText" style="text-align: center; margin-top: 5px; font-size: 0.8rem; color: var(--text-muted);">جاري الرفع إلى Drive...</div>
-              </div>
-
-              <div class="small-text" style="margin-top: 10px; color: var(--gold);">
-                ⚡ الصورة ترفع إلى Google Drive وتصير رابط دائم
-              </div>
-            </div>
-
-            <div id="currentImageContainer" style="margin-top: 15px; display: none;">
-              <div style="display: flex; gap: 15px; align-items: center;">
-                <div class="image-preview-box" style="width: 60px; height: 60px;">
-                  <img id="currentImage" src="" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-                <div>
-                  <div style="font-weight: 500;">الصورة الحالية</div>
-                  <button type="button" class="btn btn-secondary" style="padding: 0.3rem 1rem; font-size: 0.8rem;" onclick="removeCurrentImage()">إزالة</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="checkbox-label">
-              <input type="checkbox" id="available" checked> <span>متاح</span>
-            </label>
-          </div>
-
-          <div class="form-group">
-            <label class="checkbox-label">
-              <input type="checkbox" id="featured"> <span>مميز</span>
-            </label>
-          </div>
-
-          <div class="form-group">
-            <label>ترتيب العرض</label>
-            <input type="number" id="sort" class="form-control" value="999">
-          </div>
-        </div>
-
-        <div class="modal__footer">
-          <button type="button" class="btn btn-secondary" onclick="closeModal()">إلغاء</button>
-          <button type="submit" class="btn btn-primary">حفظ</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- نافذة إضافة تصنيف جديد -->
-  <div id="categoryModal" class="modal" aria-hidden="true">
-    <div class="modal__overlay" onclick="closeCategoryModal()"></div>
-    <div class="modal__panel" style="width: min(400px, 94%);">
-      <div class="modal__head">
-        <h3 class="modal__title">إضافة تصنيف جديد</h3>
-        <button class="modal__close" onclick="closeCategoryModal()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
-      </div>
-      <div class="modal__form">
-        <div class="form-group">
-          <label>اسم التصنيف الجديد</label>
-          <input type="text" id="newCategoryName" class="form-control" placeholder="مثال: مشروبات ساخنة">
-        </div>
-        <div class="modal__footer" style="margin-top: 1rem;">
-          <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">إلغاء</button>
-          <button type="button" class="btn btn-primary" onclick="addNewCategory()">إضافة</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // =======================
-    // الإعدادات - ضع رابط السكربت هنا
-    // =======================
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwUkHh5j3bwutqhUSJ83OURua7_jDPXjA3xLRvM5rKtik6IVUHo7jGF9m8hfV8BN-a9/exec';
-
-    // =======================
-    // Helpers (IMPORTANT): avoid preflight by NOT setting Content-Type
-    // =======================
-    async function postJson(payload) {
-  const body = new URLSearchParams();
-  body.append("payload", JSON.stringify(payload));
-
-  const res = await fetch(SCRIPT_URL, {
-    method: "POST",
-    body,
-    redirect: "follow"
-  });
-
-  const text = await res.text();
-  let data;
-  try { data = JSON.parse(text); }
-  catch { throw new Error("رد غير متوقع من السيرفر: " + text.slice(0, 180)); }
-
-  if (data && data.error) throw new Error(data.error);
-  return data;
-}
-
-    // =======================
-    // الحالة
-    // =======================
-    let items = [];
-    let categories = [];
-
-    // =======================
-    // العناصر
-    // =======================
-    const tableBody = document.getElementById('tableBody');
-    const addItemBtn = document.getElementById('addItemBtn');
-    const itemModal = document.getElementById('itemModal');
-    const itemForm = document.getElementById('itemForm');
-    const modalTitle = document.getElementById('modalTitle');
-    const categorySelect = document.getElementById('category');
-
-    // عناصر الصور
-    const imageUrlInput = document.getElementById('image_url');
-    const finalImageUrl = document.getElementById('final_image_url');
-    const urlSection = document.getElementById('urlSection');
-    const uploadSection = document.getElementById('uploadSection');
-    const uploadBtn = document.getElementById('uploadImageBtn');
-    const imageUpload = document.getElementById('imageUpload');
-    const uploadPreview = document.getElementById('uploadPreview');
-    const previewImg = document.getElementById('previewImg');
-    const uploadProgress = document.getElementById('uploadProgress');
-    const progressBar = document.getElementById('progressBar');
-    const progressText = document.getElementById('progressText');
-    const currentImageContainer = document.getElementById('currentImageContainer');
-    const currentImage = document.getElementById('currentImage');
-
-    // عناصر التصنيف
-    const addCategoryBtn = document.getElementById('addCategoryBtn');
-    const categoryModal = document.getElementById('categoryModal');
-    const newCategoryName = document.getElementById('newCategoryName');
-
-    // =======================
-    // دوال الصور - رفع إلى Drive
-    // =======================
-    function toggleImageOption(option) {
-      urlSection.style.display = option === 'url' ? 'block' : 'none';
-      uploadSection.style.display = option === 'upload' ? 'block' : 'none';
-    }
-
-    uploadBtn.addEventListener('click', () => {
-      imageUpload.click();
-    });
-
-    // دالة رفع الصورة إلى Google Drive
-    imageUpload.addEventListener('change', async function(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      // التحقق من نوع الملف
-      if (!file.type.startsWith('image/')) {
-        showToast('❌ الرجاء اختيار صورة فقط', 'error');
-        return;
-      }
-
-      // التحقق من الحجم (حد أقصى 5 ميجابايت)
-      if (file.size > 5 * 1024 * 1024) {
-        showToast('❌ الصورة كبيرة جداً (الحد الأقصى 5 ميجابايت)', 'error');
-        return;
-      }
-
-      // عرض مؤشر التحميل
-      uploadPreview.style.display = 'flex';
-      uploadProgress.style.display = 'block';
-      progressBar.style.width = '20%';
-      progressText.textContent = 'جاري تجهيز الصورة...';
-
-      const reader = new FileReader();
-
-      reader.onload = async function(event) {
-        const base64Data = event.target.result;
-
-        // عرض المعاينة
-        previewImg.src = base64Data;
-        progressBar.style.width = '40%';
-        progressText.textContent = 'جاري الرفع إلى Drive...';
-
-        try {
-          // إرسال الصورة إلى السكربت (NO Content-Type to avoid preflight)
-          const result = await postJson({
-            action: 'uploadImage',
-            imageData: base64Data,
-            fileName: file.name
-          });
-
-          if (result.success) {
-            progressBar.style.width = '100%';
-            progressText.textContent = '✅ تم الرفع بنجاح!';
-
-            // حفظ رابط الصورة
-            imageUrlInput.value = result.imageUrl;
-            finalImageUrl.value = result.imageUrl;
-
-            // عرض الصورة المرفوعة
-            currentImage.src = result.imageUrl;
-            currentImageContainer.style.display = 'block';
-            uploadPreview.style.display = 'none';
-
-            setTimeout(() => {
-              uploadProgress.style.display = 'none';
-            }, 1500);
-
-            showToast('✅ تم رفع الصورة إلى Drive بنجاح', 'success');
-          } else {
-            throw new Error(result.error || 'فشل الرفع');
-          }
-
-        } catch (error) {
-          console.error('خطأ:', error);
-          uploadProgress.style.display = 'none';
-          showToast('❌ فشل الرفع: ' + error.message, 'error');
-        }
-      };
-
-      reader.readAsDataURL(file);
-    });
-
-    function removeCurrentImage() {
-      currentImageContainer.style.display = 'none';
-      finalImageUrl.value = '';
-      imageUrlInput.value = '';
-      showToast('تم إزالة الصورة', 'success');
-    }
-
-    // =======================
-    // إضافة تصنيف جديد
-    // =======================
-    addCategoryBtn.addEventListener('click', () => {
-      categoryModal.style.display = 'block';
-      categoryModal.setAttribute('aria-hidden', 'false');
-      newCategoryName.value = '';
-    });
-
-    function closeCategoryModal() {
-      categoryModal.style.display = 'none';
-      categoryModal.setAttribute('aria-hidden', 'true');
-    }
-
-    function addNewCategory() {
-      const newCat = newCategoryName.value.trim();
-      if (!newCat) {
-        alert('الرجاء إدخال اسم التصنيف');
-        return;
-      }
-
-      const option = document.createElement('option');
-      option.value = newCat;
-      option.textContent = newCat;
-      option.selected = true;
-      categorySelect.appendChild(option);
-
-      closeCategoryModal();
-      showToast('تم إضافة التصنيف: ' + newCat, 'success');
-    }
-
-    // =======================
-    // تحميل البيانات
-    // =======================
-    async function loadItems() {
-      try {
-        tableBody.innerHTML = '<tr><td colspan="9" class="loading-row">جاري التحميل...</td></tr>';
-
-        const response = await fetch(SCRIPT_URL);
-        const data = await response.json();
-
-        console.log('البيانات المستلمة:', data);
-
-        if (data.error) throw new Error(data.error);
-
-        items = Array.isArray(data) ? data : [];
-        renderTable();
-        loadCategories();
-
-      } catch (error) {
-        console.error('خطأ في التحميل:', error);
-        showToast('خطأ في تحميل البيانات', 'error');
-        tableBody.innerHTML = '<tr><td colspan="9" class="loading-row">فشل التحميل</td></tr>';
-      }
-    }
-
-    function loadCategories() {
-      const uniqueCategories = [...new Set(items.map(item => item.category))];
-      categories = uniqueCategories.filter(cat => cat && cat.trim() !== '');
-
-      categorySelect.innerHTML = '<option value="">اختر التصنيف</option>';
-      categories.forEach(cat => {
-        const option = document.createElement('option');
-        option.value = cat;
-        option.textContent = cat;
-        categorySelect.appendChild(option);
-      });
-    }
-
-    function renderTable() {
-      if (!items || items.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="9" class="loading-row">لا توجد بيانات</td></tr>';
-        return;
-      }
-
-      let html = '';
-      items.forEach((item, index) => {
-        const imageUrl = item.image_url || 'https://via.placeholder.com/50/f1f4f9/64748b?text=صورة';
-
-        html += `
-          <tr>
-            <td>${index + 1}</td>
-            <td><img src="${fixImageUrl(imageUrl)}" class="item-image" onerror="this.src='https://via.placeholder.com/50/f1f4f9/64748b?text=صورة'" loading="lazy"></td>
-            <td>${item.name || '-'}</td>
-            <td>${item.category || '-'}</td>
-            <td>${item.price || 0} ${item.currency || 'SYP'}</td>
-            <td><span class="status-badge ${item.available ? 'status-available' : 'status-unavailable'}">${item.available ? 'متاح' : 'غير متاح'}</span></td>
-            <td>${item.featured ? '<span class="featured-badge">⭐ مميز</span>' : '-'}</td>
-            <td>${item.sort || 999}</td>
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn" onclick="editItem(${item.rowIndex || (index + 2)})">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-                  </svg>
-                </button>
-                <button class="action-btn delete" onclick="deleteItem(${item.rowIndex || (index + 2)})">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="3 6 5 6 21 6"/>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          </tr>
-        `;
-      });
-      tableBody.innerHTML = html;
-    }
-
-    function openAddModal() {
-      modalTitle.textContent = 'إضافة وجبة جديدة';
-      itemForm.reset();
-      document.getElementById('rowIndex').value = '';
-      finalImageUrl.value = '';
-      imageUrlInput.value = '';
-      currentImageContainer.style.display = 'none';
-      uploadPreview.style.display = 'none';
-      uploadProgress.style.display = 'none';
-      imageUpload.value = '';
-      toggleImageOption('url');
-      itemModal.setAttribute('aria-hidden', 'false');
-      itemModal.style.display = 'block';
-    }
-
-    function editItem(rowIndex) {
-      const item = items.find(i => i.rowIndex == rowIndex);
-      if (!item) return;
-
-      modalTitle.textContent = 'تعديل الوجبة';
-
-      document.getElementById('rowIndex').value = rowIndex;
-      document.getElementById('category').value = item.category || '';
-      document.getElementById('item_id').value = item.item_id || '';
-      document.getElementById('name').value = item.name || '';
-      document.getElementById('description').value = item.description || '';
-      document.getElementById('price').value = item.price || 0;
-      document.getElementById('currency').value = item.currency || 'SYP';
-      document.getElementById('available').checked = item.available !== false;
-      document.getElementById('featured').checked = item.featured === true;
-      document.getElementById('sort').value = item.sort || 999;
-
-      if (item.image_url) {
-        currentImage.src = item.image_url;
-        currentImageContainer.style.display = 'block';
-        imageUrlInput.value = item.image_url;
-        finalImageUrl.value = item.image_url;
-      } else {
-        currentImageContainer.style.display = 'none';
-      }
-
-      uploadPreview.style.display = 'none';
-      toggleImageOption('url');
-      itemModal.setAttribute('aria-hidden', 'false');
-      itemModal.style.display = 'block';
-    }
-
-    async function deleteItem(rowIndex) {
-      if (!confirm('هل أنت متأكد من الحذف؟')) return;
-
-      try {
-        showToast('جاري الحذف...', 'success');
-
-        // NO Content-Type header => no preflight
-        const data = await postJson({ action: 'delete', rowIndex: Number(rowIndex) });
-
-        if (data.success) {
-          showToast('تم الحذف بنجاح', 'success');
-          loadItems();
-        } else {
-          showToast(data.error || 'حدث خطأ', 'error');
-        }
-      } catch (error) {
-        showToast('فشل الاتصال بالخادم: ' + error.message, 'error');
-      }
-    }
-
-    itemForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const rowIndex = document.getElementById('rowIndex').value;
-
-      // التأكد من وجود رابط الصورة
-      let imageToSave = finalImageUrl.value || imageUrlInput.value;
-
-      // إذا كانت الصورة فارغة، استخدم رابط افتراضي
-      if (!imageToSave) {
-        imageToSave = 'https://via.placeholder.com/150/f1f4f9/64748b?text=No+Image';
-      }
-
-      const formData = {
-        category: document.getElementById('category').value,
-        item_id: document.getElementById('item_id').value,
-        name: document.getElementById('name').value,
-        description: document.getElementById('description').value,
-        price: Number(document.getElementById('price').value) || 0,
-        currency: document.getElementById('currency').value,
-        image_url: imageToSave,
-        available: document.getElementById('available').checked,
-        featured: document.getElementById('featured').checked,
-        sort: Number(document.getElementById('sort').value) || 999
-      };
-
-      // التحقق من البيانات المطلوبة
-      if (!formData.category || !formData.name) {
-        showToast('❌ الرجاء إدخال التصنيف والاسم', 'error');
-        return;
-      }
-
-      if (rowIndex) formData.rowIndex = Number(rowIndex);
-
-      try {
-        showToast('🔄 جاري الحفظ...', 'success');
-
-        // NO Content-Type header => no preflight
-        const data = await postJson({
-          action: rowIndex ? 'update' : 'add',
-          item: formData
-        });
-
-        if (data.success) {
-          showToast(data.message || '✅ تم الحفظ', 'success');
-          closeModal();
-          loadItems();
-        } else {
-          showToast(data.error || 'حدث خطأ', 'error');
-        }
-      } catch (error) {
-        console.error('خطأ:', error);
-        showToast('فشل الاتصال بالخادم: ' + error.message, 'error');
-      }
-    });
-
-    function closeModal() {
-      itemModal.setAttribute('aria-hidden', 'true');
-      itemModal.style.display = 'none';
-    }
-
-    function showToast(message, type = 'success') {
-      let toast = document.querySelector('.toast');
-      if (!toast) {
-        toast = document.createElement('div');
-        toast.className = 'toast';
-        document.body.appendChild(toast);
-      }
-      toast.textContent = message;
-      toast.className = `toast ${type}`;
-      setTimeout(() => toast.classList.add('show'), 10);
-      setTimeout(() => toast.classList.remove('show'), 3000);
-    }
-    function fixImageUrl(url) {
-  if (!url) return "https://via.placeholder.com/300";
-
-  // Google Drive تحويل تلقائي
-  if (url.includes("drive.google.com")) {
-    const idMatch = url.match(/[-\\w]{25,}/);
-    if (idMatch) {
-      return "https://lh3.googleusercontent.com/d/" + idMatch[0];
-    }
-  }
-
-  // Proxy لأي موقع (حل مشكلة عدم عرض الصور)
-  return "https://images.weserv.nl/?url=" + encodeURIComponent(url);
-}
-
-    document.querySelector('#itemModal .modal__overlay').addEventListener('click', closeModal);
-    document.querySelectorAll('.nav-item').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-      });
-    });
-
-    addItemBtn.addEventListener('click', openAddModal);
-
-    // تحميل البيانات عند بدء التشغيل
-    loadItems();
-  </script>
-</body>
-</html>
-
-
-
-
-
-
-
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
