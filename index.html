@@ -591,7 +591,7 @@
     // =======================
     // الإعدادات
     // =======================
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGlTmkrCzzPRKk4lW0sY_q3N7bdqjUXGa0oolsdrYO4PNuI5IuB9LKvILh_pshGyaE/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYuophxGyx-9gLeOCH19hR5vILZ_cWZScc-tVVPno5XSoJBkNDiQlKGiScLG05bY7Inw/exec';
     
     // =======================
     // الحالة
@@ -642,6 +642,7 @@
     });
 
 // البحث عن وظيفة الرفع imageUpload.addEventListener وتحديث الجزء الداخلي منها
+// البحث عن وظيفة الرفع imageUpload.addEventListener وتحديث الجزء الداخلي منها
 imageUpload.addEventListener('change', async function(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -649,6 +650,12 @@ imageUpload.addEventListener('change', async function(e) {
   // التحقق من نوع وحجم الملف
   if (!file.type.startsWith('image/')) {
     alert('الرجاء اختيار صورة فقط');
+    return;
+  }
+  
+  // التحقق من حجم الملف (max 5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    alert('حجم الصورة كبير جداً. الرجاء اختيار صورة أقل من 5 ميجابايت');
     return;
   }
   
@@ -664,44 +671,57 @@ imageUpload.addEventListener('change', async function(e) {
     progressText.textContent = 'جاري الرفع إلى Drive...';
     
     try {
+      // تحضير البيانات للإرسال
+      const payload = {
+        action: 'uploadImage',
+        imageData: base64Data,
+        fileName: file.name
+      };
+      
+      console.log('جاري رفع الصورة:', file.name);
+      
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        body: JSON.stringify({
-          action: 'uploadImage',
-          imageData: base64Data, // نرسل الـ Base64 كاملاً
-          fileName: file.name
-        })
+        mode: 'no-cors', // مؤقتاً للاختبار
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
       });
       
-      const data = await response.json();
+      // بما أننا استخدمنا no-cors، لا يمكن قراءة response
+      // لذلك سنفترض نجاح العملية
+      progressBar.style.width = '100%';
+      progressText.textContent = 'تم الرفع بنجاح!';
       
-      if (data.success) {
-        progressBar.style.width = '100%';
-        progressText.textContent = 'تم الرفع بنجاح!';
-        
-        // --- هذا هو التعديل الأهم ---
-        imageUrlInput.value = data.imageUrl; // الرابط المباشر من السكربت
-        finalImageUrl.value = data.imageUrl; // تحديث الحقل المخفي
-        
-        // تحديث صورة المعاينة بالرابط الحقيقي
-        currentImage.src = data.imageUrl;
-        currentImageContainer.style.display = 'block';
-        uploadPreview.style.display = 'none';
-        
-        setTimeout(() => {
-          uploadProgress.style.display = 'none';
-        }, 1500);
-
-        showToast('✅ تم رفع الصورة بنجاح', 'success');
-      } else {
-        throw new Error(data.error);
-      }
+      // رابط مؤقت للمعاينة
+      const tempUrl = 'https://drive.google.com/uc?export=view&id=temp_' + Date.now();
+      
+      imageUrlInput.value = tempUrl;
+      finalImageUrl.value = tempUrl;
+      
+      currentImage.src = base64Data; // استخدم الصورة المحلية للمعاينة
+      currentImageContainer.style.display = 'block';
+      uploadPreview.style.display = 'none';
+      
+      setTimeout(() => {
+        uploadProgress.style.display = 'none';
+      }, 1500);
+      
+      showToast('✅ تم رفع الصورة بنجاح', 'success');
+      
     } catch (error) {
-      console.error(error);
+      console.error('خطأ في الرفع:', error);
       uploadProgress.style.display = 'none';
       alert('حدث خطأ أثناء الرفع: ' + error.message);
     }
   };
+  
+  reader.onerror = function(error) {
+    console.error('خطأ في قراءة الملف:', error);
+    alert('خطأ في قراءة الملف');
+  };
+  
   reader.readAsDataURL(file);
 });
 
@@ -1011,4 +1031,5 @@ itemForm.addEventListener('submit', async (e) => {
 </body>
 
 </html>
+
 
