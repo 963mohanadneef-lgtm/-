@@ -480,7 +480,7 @@
             </select>
           </div>
           
-          <!-- قسم الصور - تخزين مباشر في الشيت (بدون Drive) -->
+          <!-- قسم الصور - رفع إلى Google Drive -->
           <div class="form-group full-width">
             <label>صورة الوجبة</label>
             
@@ -489,7 +489,7 @@
                 <input type="radio" name="imageOption" value="url" checked onchange="toggleImageOption('url')"> رابط مباشر
               </label>
               <label style="display: inline-flex; align-items: center; gap: 10px;">
-                <input type="radio" name="imageOption" value="upload" onchange="toggleImageOption('upload')"> رفع صورة
+                <input type="radio" name="imageOption" value="upload" onchange="toggleImageOption('upload')"> رفع إلى Drive
               </label>
             </div>
             
@@ -503,7 +503,7 @@
                 <div style="flex: 1;">
                   <input type="file" id="imageUpload" accept="image/*" style="display: none;">
                   <button type="button" id="uploadImageBtn" class="btn btn-primary" style="width: 100%;">
-                    📤 اختر صورة
+                    📤 اختر صورة وسيتم رفعها إلى Drive
                   </button>
                 </div>
                 <div class="image-preview-box" id="uploadPreview" style="display: none;">
@@ -515,11 +515,11 @@
                 <div style="height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;">
                   <div id="progressBar" style="width: 0%; height: 100%; background: var(--gold); transition: width 0.3s;"></div>
                 </div>
-                <div id="progressText" style="text-align: center; margin-top: 5px; font-size: 0.8rem; color: var(--text-muted);">جاري تجهيز الصورة...</div>
+                <div id="progressText" style="text-align: center; margin-top: 5px; font-size: 0.8rem; color: var(--text-muted);">جاري الرفع إلى Drive...</div>
               </div>
               
               <div class="small-text" style="margin-top: 10px; color: var(--gold);">
-                ⚡ الصورة ستخزن مباشرة في الجدول (حد أقصى 1 ميجابايت)
+                ⚡ الصورة ترفع إلى Google Drive وتصير رابط دائم
               </div>
             </div>
             
@@ -591,7 +591,7 @@
     // =======================
     // الإعدادات - ضع رابط السكربت هنا
     // =======================
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzqc53h3FfM81fhlti1FFEl-NhTC3ofvFpjewF1KHHtL9J1WETV92mOTDHR53vcvyG4hg/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxNh_aJ0TCxXj4U3rzFqiAEhO6jKHHDuN5NxEy3Y4724iBU_Gx2C0YPpFkEh7JCQbTgBA/exec';
     
     // =======================
     // الحالة
@@ -630,7 +630,7 @@
     const newCategoryName = document.getElementById('newCategoryName');
 
     // =======================
-    // دوال الصور - تخزين مباشر (بدون Drive)
+    // دوال الصور - رفع إلى Drive
     // =======================
     function toggleImageOption(option) {
       urlSection.style.display = option === 'url' ? 'block' : 'none';
@@ -641,8 +641,8 @@
       imageUpload.click();
     });
 
-    // دالة رفع الصورة - تخزين مباشر في الشيت (بدون خدمات خارجية)
-    imageUpload.addEventListener('change', function(e) {
+    // دالة رفع الصورة إلى Google Drive
+    imageUpload.addEventListener('change', async function(e) {
       const file = e.target.files[0];
       if (!file) return;
       
@@ -652,53 +652,69 @@
         return;
       }
       
-      // التحقق من الحجم (حد أقصى 1 ميجابايت)
-      if (file.size > 1024 * 1024) {
-        showToast('❌ الصورة كبيرة جداً (الحد الأقصى 1 ميجابايت)', 'error');
+      // التحقق من الحجم (حد أقصى 5 ميجابايت)
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('❌ الصورة كبيرة جداً (الحد الأقصى 5 ميجابايت)', 'error');
         return;
       }
       
       // عرض مؤشر التحميل
       uploadPreview.style.display = 'flex';
       uploadProgress.style.display = 'block';
-      progressBar.style.width = '30%';
+      progressBar.style.width = '20%';
       progressText.textContent = 'جاري تجهيز الصورة...';
       
       const reader = new FileReader();
       
-      reader.onload = function(event) {
+      reader.onload = async function(event) {
         const base64Data = event.target.result;
         
         // عرض المعاينة
         previewImg.src = base64Data;
-        uploadPreview.style.display = 'flex';
+        progressBar.style.width = '40%';
+        progressText.textContent = 'جاري الرفع إلى Drive...';
         
-        // تحديث شريط التقدم
-        progressBar.style.width = '80%';
-        progressText.textContent = 'تم تجهيز الصورة...';
-        
-        // حفظ الـ Base64 مباشرة في الحقول
-        imageUrlInput.value = base64Data;
-        finalImageUrl.value = base64Data;
-        
-        // إكمال شريط التقدم
-        progressBar.style.width = '100%';
-        progressText.textContent = '✅ تم تجهيز الصورة بنجاح!';
-        
-        // إظهار الصورة في المكان المخصص
-        setTimeout(() => {
-          currentImage.src = base64Data;
-          currentImageContainer.style.display = 'block';
-          uploadPreview.style.display = 'none';
-          uploadProgress.style.display = 'none';
+        try {
+          // إرسال الصورة إلى السكربت
+          const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'uploadImage',
+              imageData: base64Data,
+              fileName: file.name
+            })
+          });
           
-          showToast('✅ تم تجهيز الصورة بنجاح', 'success');
-        }, 500);
-      };
-      
-      reader.onerror = function() {
-        uploadProgress.style.display = 'none';
-        showToast('❌ فشل قراءة الصورة', 'error');
+          const result = await response.json();
+          
+          if (result.success) {
+            progressBar.style.width = '100%';
+            progressText.textContent = '✅ تم الرفع بنجاح!';
+            
+            // حفظ رابط الصورة
+            imageUrlInput.value = result.imageUrl;
+            finalImageUrl.value = result.imageUrl;
+            
+            // عرض الصورة المرفوعة
+            currentImage.src = result.imageUrl;
+            currentImageContainer.style.display = 'block';
+            uploadPreview.style.display = 'none';
+            
+            setTimeout(() => {
+              uploadProgress.style.display = 'none';
+            }, 1500);
+            
+            showToast('✅ تم رفع الصورة إلى Drive بنجاح', 'success');
+          } else {
+            throw new Error(result.error || 'فشل الرفع');
+          }
+          
+        } catch (error) {
+          console.error('خطأ:', error);
+          uploadProgress.style.display = 'none';
+          showToast('❌ فشل الرفع: ' + error.message, 'error');
+        }
       };
       
       reader.readAsDataURL(file);
@@ -986,4 +1002,3 @@
   </script>
 </body>
 </html>
-
