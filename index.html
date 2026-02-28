@@ -356,378 +356,7 @@
     .toast.success { background: var(--success); color: white; }
     .toast.error { background: var(--danger); color: white; }
     
-    /* ========== تصميم متكامل للجوال ========== */
-    @media (max-width: 768px) {
-      .dashboard {
-        flex-direction: column;
-      }
-      
-      .sidebar {
-        width: 100%;
-        height: auto;
-        position: fixed;
-        bottom: 0;
-        top: auto;
-        right: 0;
-        left: 0;
-        border-left: none;
-        border-top: 1px solid var(--border);
-        z-index: 1000;
-        background: var(--surface);
-        box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
-      }
-      
-      .sidebar__logo {
-        display: none;
-      }
-      
-      .sidebar__nav {
-        display: flex;
-        justify-content: space-around;
-        padding: 0.5rem;
-      }
-      
-      .nav-item {
-        flex-direction: column;
-        padding: 0.5rem;
-        gap: 0.3rem;
-        border-right: none;
-        border-bottom: 3px solid transparent;
-        font-size: 0.8rem;
-        text-align: center;
-      }
-      
-      .nav-item:hover, 
-      .nav-item.active {
-        border-right-color: transparent;
-        border-bottom-color: var(--gold);
-      }
-      
-      .nav-item svg {
-        width: 22px;
-        height: 22px;
-      }
-      
-      .sidebar__footer {
-        display: none;
-      }
-      
-      .main-content {
-        margin-right: 0;
-        padding: 1rem;
-        padding-bottom: 85px;
-        width: 100%;
-      }
-      
-      .content-header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-        padding: 0.5rem;
-      }
-      
-      .page-title {
-        font-size: 1.8rem;
-        text-align: center;
-        color: var(--gold);
-      }
-      
-      .header-actions {
-        width: 100%;
-      }
-      
-      .btn {
-        width: 100%;
-        justify-content: center;
-        padding: 1rem;
-        font-size: 1.1rem;
-        border-radius: 15px;
-      }
-      
-      .btn-primary {
-        background: var(--gold);
-        color: var(--text);
-        font-weight: 600;
-      }
-      
-      .table-container {
-        overflow-x: auto;
-        border-radius: 20px;
-        margin: 0.5rem 0;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-      }
-      
-      .data-table {
-        min-width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-      }
-      
-      .data-table th {
-        background: var(--text);
-        color: white;
-        padding: 1rem 0.8rem;
-        font-size: 0.95rem;
-        white-space: nowrap;
-      }
-      
-      .data-table td {
-        padding: 1rem 0.8rem;
-        font-size: 0.95rem;
-      }
-      
-      .item-image {
-        width: 45px;
-        height: 45px;
-        border-radius: 12px;
-      }
-      
-      .action-buttons {
-        flex-direction: row;
-        gap: 0.5rem;
-      }
-      
-      .action-btn {
-        padding: 0.6rem;
-        border-radius: 10px;
-      }
-      
-      .modal__panel {
-        width: 94%;
-        max-height: 85vh;
-        border-radius: 25px;
-      }
-      
-      .modal__head {
-        padding: 1.2rem;
-      }
-      
-      .modal__title {
-        font-size: 1.3rem;
-      }
-      
-      .modal__close {
-        width: 45px;
-        height: 45px;
-      }
-      
-      .modal__form {
-        padding: 1.2rem;
-      }
-      
-      .form-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-      
-      .form-group.full-width {
-        grid-column: span 1;
-      }
-      
-      .form-group label {
-        font-size: 1rem;
-        margin-bottom: 0.5rem;
-      }
-      
-      .form-control {
-        padding: 1rem;
-        font-size: 1rem;
-        border-radius: 15px;
-      }
-      
-      textarea.form-control {
-        min-height: 100px;
-      }
-      
-      #category + .btn-secondary {
-        padding: 1rem !important;
-      }
-      
-      #urlSection input {
-        padding: 1rem;
-      }
-      
-      #uploadSection .btn-primary {
-        padding: 1.2rem;
-        font-size: 1rem;
-        background: var(--gold-light);
-        color: var(--text);
-        border: 2px dashed var(--gold);
-      }
-      
-      .image-preview-box {
-        width: 100px;
-        height: 100px;
-        border-radius: 15px;
-      }
-      
-      #uploadProgress {
-        margin-top: 15px;
-      }
-      
-      #progressBar {
-        height: 8px;
-      }
-      
-      #urlSection,
-      #uploadSection {
-        margin-top: 1rem;
-      }
-      
-      #urlSection [type="radio"],
-      #uploadSection [type="radio"] {
-        transform: scale(1.2);
-        margin-left: 0.5rem;
-      }
-      
-      .checkbox-label {
-        padding: 0.5rem 0;
-      }
-      
-      .checkbox-label input[type="checkbox"] {
-        width: 22px;
-        height: 22px;
-      }
-      
-      .modal__footer {
-        flex-direction: column;
-        gap: 0.8rem;
-        margin-top: 1.5rem;
-      }
-      
-      .modal__footer .btn {
-        padding: 1rem;
-        font-size: 1.1rem;
-        margin: 0;
-      }
-      
-      .modal__footer .btn-secondary {
-        order: 2;
-      }
-      
-      .modal__footer .btn-primary {
-        order: 1;
-      }
-      
-      .toast {
-        width: 90%;
-        padding: 1rem 1.5rem;
-        font-size: 1rem;
-        border-radius: 50px;
-        top: 20px;
-        left: 5%;
-        transform: translateX(0) translateY(-100px);
-      }
-      
-      .toast.show {
-        transform: translateX(0) translateY(0);
-      }
-      
-      #category {
-        font-size: 1rem;
-      }
-      
-      #addCategoryBtn {
-        min-width: 55px;
-      }
-      
-      #categoryModal .modal__panel {
-        width: 90%;
-      }
-      
-      #categoryModal .modal__footer {
-        flex-direction: row;
-      }
-      
-      #categoryModal .btn {
-        padding: 0.8rem;
-      }
-      
-      .mobile-preview-fab {
-        display: none;
-      }
-    }
-    
-    @media (max-width: 380px) {
-      .main-content {
-        padding: 0.8rem;
-        padding-bottom: 80px;
-      }
-      
-      .page-title {
-        font-size: 1.5rem;
-      }
-      
-      .nav-item {
-        font-size: 0.7rem;
-      }
-      
-      .nav-item svg {
-        width: 20px;
-        height: 20px;
-      }
-      
-      .data-table th,
-      .data-table td {
-        padding: 0.8rem 0.5rem;
-        font-size: 0.85rem;
-      }
-      
-      .item-image {
-        width: 40px;
-        height: 40px;
-      }
-      
-      .action-btn {
-        padding: 0.5rem;
-      }
-      
-      .modal__title {
-        font-size: 1.2rem;
-      }
-      
-      .form-control {
-        padding: 0.9rem;
-      }
-    }
-    
-    .mobile-preview-fab {
-      position: fixed;
-      bottom: 90px;
-      left: 20px;
-      z-index: 1001;
-      background: var(--gold);
-      color: var(--text);
-      width: 60px;
-      height: 60px;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 5px 20px rgba(251, 191, 36, 0.5);
-      border: 2px solid white;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-decoration: none;
-    }
-    
-    .mobile-preview-fab:active {
-      transform: scale(0.95);
-    }
-    
-    .mobile-preview-fab svg {
-      width: 28px;
-      height: 28px;
-    }
-    
-    @media (max-width: 768px) {
-      .mobile-preview-fab {
-        display: flex;
-      }
-    }
-    
-    /* أقسام منفصلة للتصنيفات */
+    /* تصميم التصنيفات */
     .categories-container {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -784,12 +413,330 @@
       margin-top: 1rem;
     }
     
+    /* تصميم الإعدادات */
+    .settings-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .settings-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .settings-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .settings-section {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .settings-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .settings-row {
+      margin-bottom: 1.2rem;
+    }
+    
+    .settings-row label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    
+    .settings-row .form-control {
+      background: var(--surface);
+    }
+    
+    .whatsapp-preview {
+      background: var(--surface-light);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+    
+    .preview-message {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-right: 3px solid var(--gold);
+    }
+    
+    .preview-variables {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .var-badge {
+      background: var(--gold-light);
+      color: var(--gold);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .var-badge:hover {
+      background: var(--gold);
+      color: var(--text);
+    }
+    
     .hidden-page {
       display: none;
     }
     
     .active-page {
       display: block;
+    }
+    
+    /* تصميم الجوال */
+    @media (max-width: 768px) {
+      .dashboard {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        right: 0;
+        left: 0;
+        border-left: none;
+        border-top: 1px solid var(--border);
+        z-index: 1000;
+        background: var(--surface);
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+      }
+      
+      .sidebar__logo { display: none; }
+      
+      .sidebar__nav {
+        display: flex;
+        justify-content: space-around;
+        padding: 0.5rem;
+      }
+      
+      .nav-item {
+        flex-direction: column;
+        padding: 0.5rem;
+        gap: 0.3rem;
+        border-right: none;
+        border-bottom: 3px solid transparent;
+        font-size: 0.8rem;
+        text-align: center;
+      }
+      
+      .nav-item:hover, 
+      .nav-item.active {
+        border-right-color: transparent;
+        border-bottom-color: var(--gold);
+      }
+      
+      .nav-item svg {
+        width: 22px;
+        height: 22px;
+      }
+      
+      .sidebar__footer { display: none; }
+      
+      .main-content {
+        margin-right: 0;
+        padding: 1rem;
+        padding-bottom: 85px;
+        width: 100%;
+      }
+      
+      .content-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .page-title {
+        font-size: 1.8rem;
+        text-align: center;
+        color: var(--gold);
+      }
+      
+      .header-actions { width: 100%; }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 1rem;
+        font-size: 1.1rem;
+        border-radius: 15px;
+      }
+      
+      .btn-primary {
+        background: var(--gold);
+        color: var(--text);
+        font-weight: 600;
+      }
+      
+      .table-container {
+        overflow-x: auto;
+        border-radius: 20px;
+        margin: 0.5rem 0;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      }
+      
+      .data-table {
+        min-width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+      
+      .data-table th {
+        background: var(--text);
+        color: white;
+        padding: 1rem 0.8rem;
+        font-size: 0.95rem;
+        white-space: nowrap;
+      }
+      
+      .data-table td {
+        padding: 1rem 0.8rem;
+        font-size: 0.95rem;
+      }
+      
+      .item-image {
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+      }
+      
+      .action-buttons { flex-direction: row; gap: 0.5rem; }
+      .action-btn { padding: 0.6rem; border-radius: 10px; }
+      
+      .modal__panel {
+        width: 94%;
+        max-height: 85vh;
+        border-radius: 25px;
+      }
+      
+      .modal__head { padding: 1.2rem; }
+      .modal__title { font-size: 1.3rem; }
+      .modal__close { width: 45px; height: 45px; }
+      .modal__form { padding: 1.2rem; }
+      .form-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .form-group.full-width { grid-column: span 1; }
+      .form-group label { font-size: 1rem; }
+      .form-control { padding: 1rem; font-size: 1rem; border-radius: 15px; }
+      textarea.form-control { min-height: 100px; }
+      
+      .image-preview-box { width: 100px; height: 100px; border-radius: 15px; }
+      #uploadProgress { margin-top: 15px; }
+      #progressBar { height: 8px; }
+      
+      .checkbox-label input[type="checkbox"] {
+        width: 22px;
+        height: 22px;
+      }
+      
+      .modal__footer {
+        flex-direction: column;
+        gap: 0.8rem;
+        margin-top: 1.5rem;
+      }
+      
+      .modal__footer .btn {
+        padding: 1rem;
+        font-size: 1.1rem;
+        margin: 0;
+      }
+      
+      .toast {
+        width: 90%;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 50px;
+        top: 20px;
+        left: 5%;
+        transform: translateX(0) translateY(-100px);
+      }
+      
+      .toast.show { transform: translateX(0) translateY(0); }
+      
+      .settings-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .settings-card {
+        padding: 1.5rem;
+      }
+      
+      .categories-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .category-card { padding: 1.2rem; }
+      
+      .mobile-preview-fab {
+        display: flex;
+        position: fixed;
+        bottom: 90px;
+        left: 20px;
+        z-index: 1001;
+        background: var(--gold);
+        color: var(--text);
+        width: 60px;
+        height: 60px;
+        border-radius: 30px;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 5px 20px rgba(251, 191, 36, 0.5);
+        border: 2px solid white;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+      }
+      
+      .mobile-preview-fab:active { transform: scale(0.95); }
+      .mobile-preview-fab svg { width: 28px; height: 28px; }
+    }
+    
+    @media (max-width: 380px) {
+      .main-content {
+        padding: 0.8rem;
+        padding-bottom: 80px;
+      }
+      
+      .page-title { font-size: 1.5rem; }
+      .nav-item { font-size: 0.7rem; }
+      .nav-item svg { width: 20px; height: 20px; }
+      .data-table th, .data-table td { padding: 0.8rem 0.5rem; font-size: 0.85rem; }
+      .item-image { width: 40px; height: 40px; }
+      .action-btn { padding: 0.5rem; }
+      .modal__title { font-size: 1.2rem; }
+      .form-control { padding: 0.9rem; }
     }
   </style>
 </head>
@@ -869,7 +816,7 @@
         </div>
       </div>
 
-      <!-- صفحة التصنيفات (قسم منفصل) -->
+      <!-- صفحة التصنيفات -->
       <div id="categories-page" class="hidden-page">
         <header class="content-header">
           <h1 class="page-title">إدارة التصنيفات</h1>
@@ -884,18 +831,105 @@
         </header>
 
         <div class="categories-container" id="categoriesContainer">
-          <!-- سيتم تعبئتها بالتصنيفات عبر JavaScript -->
           <div class="loading-row">جاري تحميل التصنيفات...</div>
         </div>
       </div>
 
-      <!-- صفحة الإعدادات -->
+      <!-- صفحة الإعدادات المتكاملة -->
       <div id="settings-page" class="hidden-page">
         <header class="content-header">
           <h1 class="page-title">الإعدادات</h1>
         </header>
-        <div class="table-container" style="padding: 2rem; text-align: center;">
-          <p style="color: var(--text-muted); font-size: 1.2rem;">صفحة الإعدادات - قيد التطوير</p>
+        
+        <div class="settings-container">
+          <!-- إعدادات واتساب -->
+          <div class="settings-card">
+            <h3>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+              </svg>
+              إعدادات واتساب
+            </h3>
+            
+            <div class="settings-section">
+              <div class="settings-row">
+                <label>رقم واتساب (مع رمز الدولة)</label>
+                <input type="text" id="whatsappNumber" class="form-control" placeholder="مثال: 966501234567" value="963987654321">
+                <div class="small-text">📱 أدخل الرقم بدون صفر أو +، مثال: 966501234567</div>
+              </div>
+              
+              <div class="settings-row">
+                <label>رسالة الطلب المبدئية</label>
+                <textarea id="orderMessageTemplate" class="form-control" rows="4">مرحباً 👋
+أريد طلب:
+{items}
+
+الإجمالي: {total} {currency}</textarea>
+                <div class="small-text">💬 هذه الرسالة ستُرسل عند الضغط على زر الطلب</div>
+              </div>
+            </div>
+            
+            <div class="settings-section">
+              <h4 style="margin-bottom: 1rem; color: var(--text);">معاينة الرسالة</h4>
+              <div class="whatsapp-preview">
+                <div class="preview-message" id="whatsappPreview">
+                  مرحباً 👋<br>
+                  أريد طلب:<br>
+                  - شاورما دجاج (x2)<br>
+                  - حمص (x1)<br>
+                  <br>
+                  الإجمالي: 75000 ل.س
+                </div>
+                <div class="preview-variables">
+                  <span class="var-badge" onclick="insertVariable('{items}')">{items}</span>
+                  <span class="var-badge" onclick="insertVariable('{total}')">{total}</span>
+                  <span class="var-badge" onclick="insertVariable('{currency}')">{currency}</span>
+                  <span class="var-badge" onclick="insertVariable('{restaurant}')">{restaurant}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- إعدادات عامة -->
+          <div class="settings-card">
+            <h3>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H5.78a1.65 1.65 0 0 0-1.51 1 1.65 1.65 0 0 0 .33 1.82l.07.07A10 10 0 0 0 12 17.66a10 10 0 0 0 6.26-2.59l.07-.07z"/>
+              </svg>
+              إعدادات عامة
+            </h3>
+            
+            <div class="settings-row">
+              <label>اسم المطعم</label>
+              <input type="text" id="restaurantName" class="form-control" value="مطعمي">
+            </div>
+            
+            <div class="settings-row">
+              <label>العملة الافتراضية</label>
+              <select id="defaultCurrency" class="form-control">
+                <option value="SYP">ل.س (ليرة سورية)</option>
+                <option value="USD">$ (دولار)</option>
+                <option value="TRY">₺ (ليرة تركية)</option>
+                <option value="EUR">€ (يورو)</option>
+              </select>
+            </div>
+            
+            <div class="settings-row">
+              <label>ترتيب عرض التصنيفات</label>
+              <select id="categorySortOrder" class="form-control">
+                <option value="sort">حسب الترتيب المخصص</option>
+                <option value="name">حسب الاسم</option>
+                <option value="count">حسب عدد الوجبات</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- أزرار الحفظ -->
+          <div style="grid-column: 1/-1; display: flex; gap: 1rem; justify-content: flex-end;">
+            <button class="btn btn-secondary" onclick="resetSettings()">إعادة تعيين</button>
+            <button class="btn btn-primary" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+          </div>
         </div>
       </div>
     </main>
@@ -961,7 +995,6 @@
             </select>
           </div>
 
-          <!-- قسم الصور - رفع إلى Google Drive -->
           <div class="form-group full-width">
             <label>صورة الوجبة</label>
 
@@ -1077,7 +1110,7 @@
     <div class="modal__overlay" onclick="closeEditCategoryModal()"></div>
     <div class="modal__panel" style="width: min(400px, 94%);">
       <div class="modal__head">
-        <h3 class="modal__title">تعديل اسم التصنيف</h3>
+        <h3 class="modal__title">تعديل التصنيف</h3>
         <button class="modal__close" onclick="closeEditCategoryModal()">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -1085,10 +1118,9 @@
         </button>
       </div>
       <div class="modal__form">
-        <input type="hidden" id="editingOldCategoryName">
         <input type="hidden" id="editingCategoryRowIndex">
         <div class="form-group">
-          <label>اسم التصنيف الجديد</label>
+          <label>اسم التصنيف</label>
           <input type="text" id="editCategoryName" class="form-control" placeholder="مثال: مشروبات ساخنة">
         </div>
         <div class="form-group">
@@ -1107,7 +1139,7 @@
     // =======================
     // الإعدادات
     // =======================
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx8D6A6gFQrIIvcfMfCAMYimhKsuqOeWPrIPpi4-9WQoKEGCogFMjGZeJsVqcFWIZ8/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwiNIcrSAiY0fG4adlazciNEDxsES49GrfTvMW-UdXqy02Hx_jBZ12j9Gvz8KtEaTWg/exec';
 
     // =======================
     // Helpers
@@ -1136,6 +1168,98 @@
     // =======================
     let items = [];
     let categories = [];
+    let settings = {};
+
+    // تحميل الإعدادات من localStorage
+    function loadSettings() {
+      try {
+        const saved = localStorage.getItem('menuflow_settings');
+        if (saved) {
+          settings = JSON.parse(saved);
+        } else {
+          settings = {
+            whatsappNumber: '963987654321',
+            orderMessageTemplate: 'مرحباً 👋\nأريد طلب:\n{items}\n\nالإجمالي: {total} {currency}',
+            restaurantName: 'مطعمي',
+            defaultCurrency: 'SYP',
+            categorySortOrder: 'sort'
+          };
+        }
+        
+        // تطبيق الإعدادات على الحقول
+        document.getElementById('whatsappNumber').value = settings.whatsappNumber || '963987654321';
+        document.getElementById('orderMessageTemplate').value = settings.orderMessageTemplate || 'مرحباً 👋\nأريد طلب:\n{items}\n\nالإجمالي: {total} {currency}';
+        document.getElementById('restaurantName').value = settings.restaurantName || 'مطعمي';
+        document.getElementById('defaultCurrency').value = settings.defaultCurrency || 'SYP';
+        document.getElementById('categorySortOrder').value = settings.categorySortOrder || 'sort';
+        
+        updateWhatsAppPreview();
+      } catch (e) {
+        console.error('خطأ في تحميل الإعدادات:', e);
+      }
+    }
+
+    // حفظ الإعدادات
+    async function saveSettings() {
+      try {
+        const newSettings = {
+          whatsappNumber: document.getElementById('whatsappNumber').value,
+          orderMessageTemplate: document.getElementById('orderMessageTemplate').value,
+          restaurantName: document.getElementById('restaurantName').value,
+          defaultCurrency: document.getElementById('defaultCurrency').value,
+          categorySortOrder: document.getElementById('categorySortOrder').value
+        };
+        
+        // حفظ في localStorage
+        localStorage.setItem('menuflow_settings', JSON.stringify(newSettings));
+        settings = newSettings;
+        
+        showToast('✅ تم حفظ الإعدادات بنجاح', 'success');
+        updateWhatsAppPreview();
+      } catch (e) {
+        showToast('❌ فشل حفظ الإعدادات', 'error');
+      }
+    }
+
+    function resetSettings() {
+      if (confirm('هل أنت متأكد من إعادة تعيين الإعدادات؟')) {
+        localStorage.removeItem('menuflow_settings');
+        loadSettings();
+        showToast('تم إعادة تعيين الإعدادات', 'success');
+      }
+    }
+
+    function updateWhatsAppPreview() {
+      const template = document.getElementById('orderMessageTemplate').value;
+      const restaurant = document.getElementById('restaurantName').value;
+      
+      let preview = template
+        .replace('{items}', '🍔 شاورما دجاج (x2)\n🥗 تبولة (x1)\n🥤 مشروب غازي (x2)')
+        .replace('{total}', '125000')
+        .replace('{currency}', 'ل.س')
+        .replace('{restaurant}', restaurant);
+      
+      document.getElementById('whatsappPreview').innerHTML = preview.replace(/\n/g, '<br>');
+    }
+
+    function insertVariable(varName) {
+      const textarea = document.getElementById('orderMessageTemplate');
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
+      
+      textarea.value = text.substring(0, start) + varName + text.substring(end);
+      textarea.focus();
+      textarea.selectionStart = start + varName.length;
+      textarea.selectionEnd = start + varName.length;
+      
+      updateWhatsAppPreview();
+    }
+
+    // ربط أحداث الإعدادات
+    document.getElementById('whatsappNumber')?.addEventListener('input', updateWhatsAppPreview);
+    document.getElementById('orderMessageTemplate')?.addEventListener('input', updateWhatsAppPreview);
+    document.getElementById('restaurantName')?.addEventListener('input', updateWhatsAppPreview);
 
     // =======================
     // العناصر
@@ -1173,7 +1297,6 @@
     const editCategoryModal = document.getElementById('editCategoryModal');
     const editCategoryName = document.getElementById('editCategoryName');
     const editCategorySort = document.getElementById('editCategorySort');
-    const editingOldCategoryName = document.getElementById('editingOldCategoryName');
     const editingCategoryRowIndex = document.getElementById('editingCategoryRowIndex');
 
     // عناصر التنقل بين الصفحات
@@ -1190,11 +1313,9 @@
       item.addEventListener('click', (e) => {
         e.preventDefault();
         
-        // إزالة active من جميع العناصر
         navItems.forEach(nav => nav.classList.remove('active'));
         item.classList.add('active');
         
-        // إخفاء جميع الصفحات
         itemsPage.classList.add('hidden-page');
         categoriesPage.classList.add('hidden-page');
         settingsPage.classList.add('hidden-page');
@@ -1202,7 +1323,6 @@
         categoriesPage.classList.remove('active-page');
         settingsPage.classList.remove('active-page');
         
-        // عرض الصفحة المحددة
         const page = item.dataset.page;
         if (page === 'items') {
           itemsPage.classList.remove('hidden-page');
@@ -1210,7 +1330,7 @@
         } else if (page === 'categories') {
           categoriesPage.classList.remove('hidden-page');
           categoriesPage.classList.add('active-page');
-          renderCategories(); // عرض التصنيفات عند فتح الصفحة
+          renderCategories();
         } else if (page === 'settings') {
           settingsPage.classList.remove('hidden-page');
           settingsPage.classList.add('active-page');
@@ -1308,7 +1428,6 @@
     function updateCategorySelect() {
       categorySelect.innerHTML = '<option value="">اختر التصنيف</option>';
       
-      // ترتيب التصنيفات حسب sort
       const sortedCategories = [...categories].sort((a, b) => (a.sort || 999) - (b.sort || 999));
       
       sortedCategories.forEach(cat => {
@@ -1320,62 +1439,59 @@
     }
 
     function renderCategories() {
-  if (!categories || categories.length === 0) {
-    categoriesContainer.innerHTML = '<div class="loading-row">لا توجد تصنيفات</div>';
-    return;
-  }
+      if (!categories || categories.length === 0) {
+        categoriesContainer.innerHTML = '<div class="loading-row">لا توجد تصنيفات</div>';
+        return;
+      }
 
-  // ترتيب التصنيفات حسب sort
-  const sortedCategories = [...categories].sort((a, b) => (a.sort || 999) - (b.sort || 999));
-  
-  let html = '';
-  sortedCategories.forEach(category => {
-    // حساب عدد الوجبات في هذا التصنيف
-    const itemsCount = items.filter(item => item.category === category.name).length;
-    
-    html += `
-      <div class="category-card">
-        <div class="category-header">
-          <span class="category-name">${category.name}</span>
-        </div>
-        <div class="category-stats">
-          <div class="category-stat">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-              <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
-            </svg>
-            <span>${itemsCount} وجبات</span>
+      const sortedCategories = [...categories].sort((a, b) => (a.sort || 999) - (b.sort || 999));
+      
+      let html = '';
+      sortedCategories.forEach(category => {
+        const itemsCount = items.filter(item => item.category === category.name).length;
+        
+        html += `
+          <div class="category-card">
+            <div class="category-header">
+              <span class="category-name">${category.name}</span>
+            </div>
+            <div class="category-stats">
+              <div class="category-stat">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                  <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+                </svg>
+                <span>${itemsCount} وجبات</span>
+              </div>
+              <div class="category-stat">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+                <span>الترتيب: ${category.sort || 999}</span>
+              </div>
+            </div>
+            <div class="category-actions">
+              <button class="btn btn-secondary" onclick="openEditCategoryModal('${category.name}', ${category.rowIndex}, ${category.sort || 999})" style="flex: 1;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                </svg>
+                <span>تعديل</span>
+              </button>
+              <button class="btn btn-danger" onclick="deleteCategory('${category.name}', ${category.rowIndex})" style="flex: 1;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+                <span>حذف</span>
+              </button>
+            </div>
           </div>
-          <div class="category-stat">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-            <span>الترتيب: ${category.sort || 999}</span>
-          </div>
-        </div>
-        <div class="category-actions">
-          <button class="btn btn-secondary" onclick="openEditCategoryModal('${category.name}', ${category.rowIndex}, ${category.sort || 999})" style="flex: 1;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-            </svg>
-            <span>تعديل</span>
-          </button>
-          <button class="btn btn-danger" onclick="deleteCategory('${category.name}', ${category.rowIndex})" style="flex: 1;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="3 6 5 6 21 6"/>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-            </svg>
-            <span>حذف</span>
-          </button>
-        </div>
-      </div>
-    `;
-  });
-  categoriesContainer.innerHTML = html;
-}
+        `;
+      });
+      categoriesContainer.innerHTML = html;
+    }
 
     function openEditCategoryModal(name, rowIndex, sort) {
-      editingOldCategoryName.value = name;
       editCategoryName.value = name;
       editCategorySort.value = sort || 999;
       editingCategoryRowIndex.value = rowIndex;
@@ -1389,20 +1505,18 @@
     }
 
     async function saveEditedCategory() {
-      const oldName = editingOldCategoryName.value;
       const newName = editCategoryName.value.trim();
       const sort = Number(editCategorySort.value) || 999;
       const rowIndex = Number(editingCategoryRowIndex.value);
 
       if (!newName) {
-        alert('الرجاء إدخال اسم التصنيف الجديد');
+        alert('الرجاء إدخال اسم التصنيف');
         return;
       }
 
       try {
         showToast('🔄 جاري تحديث التصنيف...', 'success');
 
-        // تحديث التصنيف في قاعدة البيانات
         const result = await postJson({
           action: 'updateCategory',
           category: {
@@ -1413,29 +1527,10 @@
         });
 
         if (result.success) {
-          // إذا تغير الاسم، نقوم بتحديث جميع الوجبات التي تستخدم هذا التصنيف
-          if (oldName !== newName) {
-            let updatedCount = 0;
-            for (const item of items) {
-              if (item.category === oldName) {
-                const updatedItem = { ...item, category: newName };
-                await postJson({
-                  action: 'update',
-                  item: {
-                    rowIndex: item.rowIndex,
-                    ...updatedItem
-                  }
-                });
-                updatedCount++;
-              }
-            }
-            showToast(`✅ تم تحديث التصنيف و ${updatedCount} وجبات`, 'success');
-          } else {
-            showToast('✅ تم تحديث التصنيف', 'success');
-          }
-          
+          showToast('✅ تم تحديث التصنيف', 'success');
           closeEditCategoryModal();
-          await loadItems(); // إعادة تحميل كل البيانات
+          await loadCategories();
+          await loadItems(); // لإعادة حساب عدد الوجبات
         } else {
           throw new Error(result.error || 'فشل التحديث');
         }
@@ -1474,11 +1569,8 @@
         if (result.success) {
           showToast('✅ تم إضافة التصنيف بنجاح', 'success');
           closeCategoryModal();
-          
-          // إعادة تحميل التصنيفات
           await loadCategories();
           
-          // إضافة التصنيف إلى قائمة الخيارات في نموذج الوجبات
           if (result.category) {
             const option = document.createElement('option');
             option.value = result.category.name;
@@ -1497,12 +1589,11 @@
     }
 
     async function deleteCategory(categoryName, rowIndex) {
-      // التحقق من وجود وجبات في هذا التصنيف
       const itemsInCategory = items.filter(item => item.category === categoryName);
       
       let confirmMessage = `هل أنت متأكد من حذف التصنيف "${categoryName}"؟`;
       if (itemsInCategory.length > 0) {
-        confirmMessage = `هذا التصنيف يحتوي على ${itemsInCategory.length} وجبات. هل أنت متأكد من الحذف؟ (سيتم إزالة التصنيف من هذه الوجبات)`;
+        confirmMessage = `هذا التصنيف يحتوي على ${itemsInCategory.length} وجبات. سيتم إزالة التصنيف من هذه الوجبات. هل أنت متأكد؟`;
       }
       
       if (!confirm(confirmMessage)) return;
@@ -1510,29 +1601,27 @@
       try {
         showToast('🔄 جاري حذف التصنيف...', 'success');
 
-        // حذف التصنيف من قاعدة البيانات
         const result = await postJson({
           action: 'deleteCategory',
           rowIndex: rowIndex
         });
 
         if (result.success) {
-          // إزالة التصنيف من جميع الوجبات
-          let updatedCount = 0;
+          // تحديث الوجبات التي كانت في هذا التصنيف
           for (const item of itemsInCategory) {
-            const updatedItem = { ...item, category: '' };
             await postJson({
               action: 'update',
               item: {
                 rowIndex: item.rowIndex,
-                ...updatedItem
+                ...item,
+                category: ''
               }
             });
-            updatedCount++;
           }
           
-          showToast(`✅ تم حذف التصنيف وتحديث ${updatedCount} وجبات`, 'success');
-          await loadItems(); // إعادة تحميل كل البيانات
+          showToast(`✅ تم حذف التصنيف وتحديث ${itemsInCategory.length} وجبات`, 'success');
+          await loadCategories();
+          await loadItems();
         } else {
           throw new Error(result.error || 'فشل الحذف');
         }
@@ -1553,49 +1642,37 @@
         const response = await fetch(SCRIPT_URL);
         const data = await response.json();
 
-        console.log('البيانات المستلمة:', data);
-
         if (data.error) throw new Error(data.error);
 
         items = Array.isArray(data) ? data : [];
         renderTable();
         
-        // بعد تحميل الوجبات، نحمل التصنيفات
         await loadCategories();
 
       } catch (error) {
         console.error('خطأ في التحميل:', error);
         showToast('خطأ في تحميل البيانات', 'error');
         tableBody.innerHTML = '<tr><td colspan="9" class="loading-row">فشل التحميل</td></tr>';
-        categoriesContainer.innerHTML = '<div class="loading-row">فشل تحميل التصنيفات</div>';
       }
     }
 
     async function loadCategories() {
-  try {
-    categoriesContainer.innerHTML = '<div class="loading-row">جاري تحميل التصنيفات...</div>';
-    
-    // ✅ التصحيح: إضافة ?action=categories إلى الرابط
-    const response = await fetch(SCRIPT_URL + '?action=categories');
-    const data = await response.json();
-    
-    console.log('التصنيفات المحملة:', data); // للتأكد من البيانات
-    
-    if (data.error) throw new Error(data.error);
-    
-    categories = Array.isArray(data) ? data : [];
-    
-    // تحديث قائمة التصنيفات في نموذج الوجبات
-    updateCategorySelect();
-    
-    // عرض التصنيفات
-    renderCategories();
-    
-  } catch (error) {
-    console.error('خطأ في تحميل التصنيفات:', error);
-    categoriesContainer.innerHTML = '<div class="loading-row">فشل تحميل التصنيفات</div>';
-  }
-}
+      try {
+        const response = await fetch(SCRIPT_URL + '?action=categories');
+        const data = await response.json();
+        
+        if (data.error) throw new Error(data.error);
+        
+        categories = Array.isArray(data) ? data : [];
+        updateCategorySelect();
+        renderCategories();
+        
+      } catch (error) {
+        console.error('خطأ في تحميل التصنيفات:', error);
+        categoriesContainer.innerHTML = '<div class="loading-row">فشل تحميل التصنيفات</div>';
+      }
+    }
+
     function renderTable() {
       if (!items || items.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="9" class="loading-row">لا توجد بيانات</td></tr>';
@@ -1787,31 +1864,29 @@
     }
 
     // =======================
-    // إضافة تصنيف جديد
+    // ربط الأحداث
     // =======================
-    addCategoryBtn.addEventListener('click', () => {
+    addCategoryBtn?.addEventListener('click', () => {
       categoryModal.style.display = 'block';
       categoryModal.setAttribute('aria-hidden', 'false');
       newCategoryName.value = '';
       newCategorySort.value = '999';
     });
 
-    openCategoryModalBtn.addEventListener('click', () => {
+    openCategoryModalBtn?.addEventListener('click', () => {
       categoryModal.style.display = 'block';
       categoryModal.setAttribute('aria-hidden', 'false');
       newCategoryName.value = '';
       newCategorySort.value = '999';
     });
 
-    document.querySelector('#itemModal .modal__overlay').addEventListener('click', closeModal);
+    document.querySelector('#itemModal .modal__overlay')?.addEventListener('click', closeModal);
 
-    addItemBtn.addEventListener('click', openAddModal);
+    addItemBtn?.addEventListener('click', openAddModal);
 
-    // تحميل البيانات عند بدء التشغيل
+    // تحميل البيانات والإعدادات عند بدء التشغيل
+    loadSettings();
     loadItems();
   </script>
 </body>
 </html>
-
-
-
