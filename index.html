@@ -454,7 +454,7 @@
           
           <div class="form-group">
             <label>معرف العنصر</label>
-            <input type="text" id="item_id" class="form-control" required>
+            <input type="text" id="item_id" class="form-control">
           </div>
           
           <div class="form-group full-width">
@@ -480,7 +480,7 @@
             </select>
           </div>
           
-          <!-- قسم الصور - رفع مباشر إلى Drive -->
+          <!-- قسم الصور - تخزين مباشر في الشيت (بدون Drive) -->
           <div class="form-group full-width">
             <label>صورة الوجبة</label>
             
@@ -489,7 +489,7 @@
                 <input type="radio" name="imageOption" value="url" checked onchange="toggleImageOption('url')"> رابط مباشر
               </label>
               <label style="display: inline-flex; align-items: center; gap: 10px;">
-                <input type="radio" name="imageOption" value="upload" onchange="toggleImageOption('upload')"> رفع إلى Drive
+                <input type="radio" name="imageOption" value="upload" onchange="toggleImageOption('upload')"> رفع صورة
               </label>
             </div>
             
@@ -503,7 +503,7 @@
                 <div style="flex: 1;">
                   <input type="file" id="imageUpload" accept="image/*" style="display: none;">
                   <button type="button" id="uploadImageBtn" class="btn btn-primary" style="width: 100%;">
-                    📤 اختر صورة وسيتم رفعها تلقائياً
+                    📤 اختر صورة
                   </button>
                 </div>
                 <div class="image-preview-box" id="uploadPreview" style="display: none;">
@@ -515,11 +515,11 @@
                 <div style="height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;">
                   <div id="progressBar" style="width: 0%; height: 100%; background: var(--gold); transition: width 0.3s;"></div>
                 </div>
-                <div id="progressText" style="text-align: center; margin-top: 5px; font-size: 0.8rem; color: var(--text-muted);">جاري الرفع إلى Drive...</div>
+                <div id="progressText" style="text-align: center; margin-top: 5px; font-size: 0.8rem; color: var(--text-muted);">جاري تجهيز الصورة...</div>
               </div>
               
               <div class="small-text" style="margin-top: 10px; color: var(--gold);">
-                ⚡ الصورة ترفع مباشرة إلى Google Drive وتصير رابط دائم
+                ⚡ الصورة ستخزن مباشرة في الجدول (حد أقصى 1 ميجابايت)
               </div>
             </div>
             
@@ -589,7 +589,7 @@
 
   <script>
     // =======================
-    // الإعدادات
+    // الإعدادات - ضع رابط السكربت هنا
     // =======================
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwkvl8Xj4w0S0sQu-1iQwAhYXnNVrTDb55U2_oBJ1glRv3B9Ij49A_S9dD8kqZesRmS6Q/exec';
     
@@ -630,7 +630,7 @@
     const newCategoryName = document.getElementById('newCategoryName');
 
     // =======================
-    // دوال الصور - رفع مباشر إلى Drive
+    // دوال الصور - تخزين مباشر (بدون Drive)
     // =======================
     function toggleImageOption(option) {
       urlSection.style.display = option === 'url' ? 'block' : 'none';
@@ -641,119 +641,68 @@
       imageUpload.click();
     });
 
-// البحث عن وظيفة الرفع imageUpload.addEventListener وتحديث الجزء الداخلي منها
-// البحث عن وظيفة الرفع imageUpload.addEventListener وتحديث الجزء الداخلي منها
-// دالة رفع الصورة إلى Imgur
-imageUpload.addEventListener('change', async function(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  
-  // معاينة الصورة
-  const reader = new FileReader();
-  reader.onload = async function(event) {
-    const base64Data = event.target.result;
-    
-    // عرض المعاينة
-    previewImg.src = base64Data;
-    uploadPreview.style.display = 'flex';
-    uploadProgress.style.display = 'block';
-    progressBar.style.width = '30%';
-    progressText.textContent = 'جاري الرفع إلى Imgur...';
-    
-    try {
-      // رفع إلى Imgur
-      const formData = new FormData();
-      formData.append('image', file);
+    // دالة رفع الصورة - تخزين مباشر في الشيت (بدون خدمات خارجية)
+    imageUpload.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
       
-      const response = await fetch('https://api.imgur.com/3/image', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Client-ID 9863d06e3e5db1f' // Client ID مجاني
-        },
-        body: formData
-      });
-      
-      const result = await response.json();
-      
-      if (result.success) {
-        progressBar.style.width = '100%';
-        progressText.textContent = 'تم الرفع بنجاح!';
-        
-        // رابط الصورة من Imgur
-        const imageUrl = result.data.link;
-        
-        // حفظ الرابط
-        imageUrlInput.value = imageUrl;
-        finalImageUrl.value = imageUrl;
-        
-        // عرض الصورة
-        currentImage.src = imageUrl;
-        currentImageContainer.style.display = 'block';
-        uploadPreview.style.display = 'none';
-        
-        setTimeout(() => {
-          uploadProgress.style.display = 'none';
-        }, 1500);
-        
-        showToast('✅ تم رفع الصورة بنجاح', 'success');
-      } else {
-        throw new Error('فشل الرفع');
+      // التحقق من نوع الملف
+      if (!file.type.startsWith('image/')) {
+        showToast('❌ الرجاء اختيار صورة فقط', 'error');
+        return;
       }
       
-    } catch (error) {
-      console.error('خطأ:', error);
-      uploadProgress.style.display = 'none';
-      showToast('❌ فشل الرفع، استخدم الرابط المباشر بدلاً من ذلك', 'error');
-    }
-  };
-  
-  reader.readAsDataURL(file);
-});
-// تعديل وظيفة حفظ البيانات (Submit) لضمان أخذ الرابط الصحيح
-itemForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  
-  const rowIndex = document.getElementById('rowIndex').value;
-  // تأكد من أخذ الرابط من الحقل الذي استقبل نتيجة الرفع
-  const imageToSave = finalImageUrl.value || imageUrlInput.value;
-
-  const formData = {
-    category: document.getElementById('category').value,
-    item_id: document.getElementById('item_id').value,
-    name: document.getElementById('name').value,
-    description: document.getElementById('description').value,
-    price: Number(document.getElementById('price').value),
-    currency: document.getElementById('currency').value,
-    image_url: imageToSave, // الرابط النهائي
-    available: document.getElementById('available').checked,
-    featured: document.getElementById('featured').checked,
-    sort: Number(document.getElementById('sort').value)
-  };
-  
-  // بقية كود الإرسال كما هو...
-  if (rowIndex) formData.rowIndex = Number(rowIndex);
-  
-  try {
-    showToast('جاري الحفظ...', 'success');
-    const response = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify({
-        action: rowIndex ? 'update' : 'add',
-        item: formData
-      })
+      // التحقق من الحجم (حد أقصى 1 ميجابايت)
+      if (file.size > 1024 * 1024) {
+        showToast('❌ الصورة كبيرة جداً (الحد الأقصى 1 ميجابايت)', 'error');
+        return;
+      }
+      
+      // عرض مؤشر التحميل
+      uploadPreview.style.display = 'flex';
+      uploadProgress.style.display = 'block';
+      progressBar.style.width = '30%';
+      progressText.textContent = 'جاري تجهيز الصورة...';
+      
+      const reader = new FileReader();
+      
+      reader.onload = function(event) {
+        const base64Data = event.target.result;
+        
+        // عرض المعاينة
+        previewImg.src = base64Data;
+        uploadPreview.style.display = 'flex';
+        
+        // تحديث شريط التقدم
+        progressBar.style.width = '80%';
+        progressText.textContent = 'تم تجهيز الصورة...';
+        
+        // حفظ الـ Base64 مباشرة في الحقول
+        imageUrlInput.value = base64Data;
+        finalImageUrl.value = base64Data;
+        
+        // إكمال شريط التقدم
+        progressBar.style.width = '100%';
+        progressText.textContent = '✅ تم تجهيز الصورة بنجاح!';
+        
+        // إظهار الصورة في المكان المخصص
+        setTimeout(() => {
+          currentImage.src = base64Data;
+          currentImageContainer.style.display = 'block';
+          uploadPreview.style.display = 'none';
+          uploadProgress.style.display = 'none';
+          
+          showToast('✅ تم تجهيز الصورة بنجاح', 'success');
+        }, 500);
+      };
+      
+      reader.onerror = function() {
+        uploadProgress.style.display = 'none';
+        showToast('❌ فشل قراءة الصورة', 'error');
+      };
+      
+      reader.readAsDataURL(file);
     });
-    const data = await response.json();
-    if (data.success) {
-      showToast(data.message, 'success');
-      closeModal();
-      loadItems();
-    } else {
-      showToast(data.error || 'حدث خطأ', 'error');
-    }
-  } catch (error) {
-    showToast('فشل الاتصال بالخادم', 'error');
-  }
-});
 
     function removeCurrentImage() {
       currentImageContainer.style.display = 'none';
@@ -805,7 +754,7 @@ itemForm.addEventListener('submit', async (e) => {
         
         if (data.error) throw new Error(data.error);
         
-        items = data;
+        items = Array.isArray(data) ? data : [];
         renderTable();
         loadCategories();
         
@@ -882,10 +831,11 @@ itemForm.addEventListener('submit', async (e) => {
       imageUpload.value = '';
       toggleImageOption('url');
       itemModal.setAttribute('aria-hidden', 'false');
+      itemModal.style.display = 'block';
     }
 
     function editItem(rowIndex) {
-      const item = items.find(i => i.rowIndex === rowIndex);
+      const item = items.find(i => i.rowIndex == rowIndex);
       if (!item) return;
       
       modalTitle.textContent = 'تعديل الوجبة';
@@ -913,6 +863,7 @@ itemForm.addEventListener('submit', async (e) => {
       uploadPreview.style.display = 'none';
       toggleImageOption('url');
       itemModal.setAttribute('aria-hidden', 'false');
+      itemModal.style.display = 'block';
     }
 
     async function deleteItem(rowIndex) {
@@ -923,7 +874,8 @@ itemForm.addEventListener('submit', async (e) => {
         
         const response = await fetch(SCRIPT_URL, {
           method: 'POST',
-          body: JSON.stringify({ action: 'delete', rowIndex })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'delete', rowIndex: Number(rowIndex) })
         });
         
         const data = await response.json();
@@ -943,26 +895,42 @@ itemForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const rowIndex = document.getElementById('rowIndex').value;
+      
+      // التأكد من وجود رابط الصورة
+      let imageToSave = finalImageUrl.value || imageUrlInput.value;
+      
+      // إذا كانت الصورة فارغة، استخدم رابط افتراضي
+      if (!imageToSave) {
+        imageToSave = 'https://via.placeholder.com/150/f1f4f9/64748b?text=No+Image';
+      }
+      
       const formData = {
         category: document.getElementById('category').value,
         item_id: document.getElementById('item_id').value,
         name: document.getElementById('name').value,
         description: document.getElementById('description').value,
-        price: Number(document.getElementById('price').value),
+        price: Number(document.getElementById('price').value) || 0,
         currency: document.getElementById('currency').value,
-        image_url: finalImageUrl.value || imageUrlInput.value,
+        image_url: imageToSave,
         available: document.getElementById('available').checked,
         featured: document.getElementById('featured').checked,
-        sort: Number(document.getElementById('sort').value)
+        sort: Number(document.getElementById('sort').value) || 999
       };
+      
+      // التحقق من البيانات المطلوبة
+      if (!formData.category || !formData.name) {
+        showToast('❌ الرجاء إدخال التصنيف والاسم', 'error');
+        return;
+      }
       
       if (rowIndex) formData.rowIndex = Number(rowIndex);
       
       try {
-        showToast('جاري الحفظ...', 'success');
+        showToast('🔄 جاري الحفظ...', 'success');
         
         const response = await fetch(SCRIPT_URL, {
           method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: rowIndex ? 'update' : 'add',
             item: formData
@@ -979,12 +947,14 @@ itemForm.addEventListener('submit', async (e) => {
           showToast(data.error || 'حدث خطأ', 'error');
         }
       } catch (error) {
+        console.error('خطأ:', error);
         showToast('فشل الاتصال بالخادم', 'error');
       }
     });
 
     function closeModal() {
       itemModal.setAttribute('aria-hidden', 'true');
+      itemModal.style.display = 'none';
     }
 
     function showToast(message, type = 'success') {
@@ -1010,13 +980,9 @@ itemForm.addEventListener('submit', async (e) => {
     });
 
     addItemBtn.addEventListener('click', openAddModal);
+    
+    // تحميل البيانات عند بدء التشغيل
     loadItems();
   </script>
 </body>
-
 </html>
-
-
-
-
-
