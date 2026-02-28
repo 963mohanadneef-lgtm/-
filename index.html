@@ -1057,14 +1057,20 @@
       </div>
       <div class="modal__form">
         <div class="form-group">
-          <label>اسم التصنيف الجديد</label>
-          <input type="text" id="newCategoryName" class="form-control" placeholder="مثال: مشروبات ساخنة">
-        </div>
-        <div class="modal__footer" style="margin-top: 1rem;">
-          <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">إلغاء</button>
-          <button type="button" class="btn btn-primary" onclick="addNewCategory()">إضافة</button>
-        </div>
-      </div>
+         <div class="modal__form">
+  <div class="form-group">
+    <label>اسم التصنيف الجديد</label>
+    <input type="text" id="newCategoryName" class="form-control" placeholder="مثال: مشروبات ساخنة">
+  </div>
+  <div class="form-group">
+    <label>الترتيب</label>
+    <input type="number" id="newCategorySort" class="form-control" value="999">
+  </div>
+  <div class="modal__footer" style="margin-top: 1rem;">
+    <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">إلغاء</button>
+    <button type="button" class="btn btn-primary" onclick="addNewCategory()">إضافة</button>
+  </div>
+</div>
     </div>
   </div>
 
@@ -1081,331 +1087,317 @@
         </button>
       </div>
       <div class="modal__form">
-        <input type="hidden" id="editingOldCategoryName">
-        <div class="form-group">
-          <label>اسم التصنيف الجديد</label>
-          <input type="text" id="editCategoryName" class="form-control" placeholder="مثال: مشروبات ساخنة">
-        </div>
-        <div class="modal__footer" style="margin-top: 1rem;">
-          <button type="button" class="btn btn-secondary" onclick="closeEditCategoryModal()">إلغاء</button>
-          <button type="button" class="btn btn-primary" onclick="saveEditedCategory()">حفظ</button>
-        </div>
-      </div>
+  <input type="hidden" id="editingOldCategoryName">
+  <input type="hidden" id="editingCategoryRowIndex">
+  <div class="form-group">
+    <label>اسم التصنيف الجديد</label>
+    <input type="text" id="editCategoryName" class="form-control" placeholder="مثال: مشروبات ساخنة">
+  </div>
+  <div class="form-group">
+    <label>الترتيب</label>
+    <input type="number" id="editCategorySort" class="form-control" value="999">
+  </div>
+  <div class="modal__footer" style="margin-top: 1rem;">
+    <button type="button" class="btn btn-secondary" onclick="closeEditCategoryModal()">إلغاء</button>
+    <button type="button" class="btn btn-primary" onclick="saveEditedCategory()">حفظ</button>
+  </div>
+</div>
     </div>
   </div>
 
   <script>
     // =======================
-    // الإعدادات
-    // =======================
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwUkHh5j3bwutqhUSJ83OURua7_jDPXjA3xLRvM5rKtik6IVUHo7jGF9m8hfV8BN-a9/exec';
+// الإعدادات
+// =======================
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwUkHh5j3bwutqhUSJ83OURua7_jDPXjA3xLRvM5rKtik6IVUHo7jGF9m8hfV8BN-a9/exec';
 
-    // =======================
-    // Helpers
-    // =======================
-    async function postJson(payload) {
-      const body = new URLSearchParams();
-      body.append("payload", JSON.stringify(payload));
+// =======================
+// الحالة
+// =======================
+let items = [];
+let categories = [];
 
-      const res = await fetch(SCRIPT_URL, {
-        method: "POST",
-        body,
-        redirect: "follow"
-      });
+// =======================
+// تحميل البيانات
+// =======================
+async function loadItems() {
+  try {
+    tableBody.innerHTML = '<tr><td colspan="9" class="loading-row">جاري التحميل...</td></tr>';
 
-      const text = await res.text();
-      let data;
-      try { data = JSON.parse(text); }
-      catch { throw new Error("رد غير متوقع من السيرفر: " + text.slice(0, 180)); }
+    const response = await fetch(SCRIPT_URL);
+    const data = await response.json();
 
-      if (data && data.error) throw new Error(data.error);
-      return data;
-    }
+    console.log('البيانات المستلمة:', data);
 
-    // =======================
-    // الحالة
-    // =======================
-    let items = [];
-    let categories = [];
+    if (data.error) throw new Error(data.error);
 
-    // =======================
-    // العناصر
-    // =======================
-    const tableBody = document.getElementById('tableBody');
-    const addItemBtn = document.getElementById('addItemBtn');
-    const itemModal = document.getElementById('itemModal');
-    const itemForm = document.getElementById('itemForm');
-    const modalTitle = document.getElementById('modalTitle');
-    const categorySelect = document.getElementById('category');
-
-    // عناصر الصور
-    const imageUrlInput = document.getElementById('image_url');
-    const finalImageUrl = document.getElementById('final_image_url');
-    const urlSection = document.getElementById('urlSection');
-    const uploadSection = document.getElementById('uploadSection');
-    const uploadBtn = document.getElementById('uploadImageBtn');
-    const imageUpload = document.getElementById('imageUpload');
-    const uploadPreview = document.getElementById('uploadPreview');
-    const previewImg = document.getElementById('previewImg');
-    const uploadProgress = document.getElementById('uploadProgress');
-    const progressBar = document.getElementById('progressBar');
-    const progressText = document.getElementById('progressText');
-    const currentImageContainer = document.getElementById('currentImageContainer');
-    const currentImage = document.getElementById('currentImage');
-
-    // عناصر التصنيف
-    const addCategoryBtn = document.getElementById('addCategoryBtn');
-    const categoryModal = document.getElementById('categoryModal');
-    const newCategoryName = document.getElementById('newCategoryName');
-    const openCategoryModalBtn = document.getElementById('openCategoryModalBtn');
+    items = Array.isArray(data) ? data : [];
+    renderTable();
     
-    // عناصر تعديل التصنيف
-    const editCategoryModal = document.getElementById('editCategoryModal');
-    const editCategoryName = document.getElementById('editCategoryName');
-    const editingOldCategoryName = document.getElementById('editingOldCategoryName');
+    // بعد تحميل الوجبات، نحمل التصنيفات
+    await loadCategories();
 
-    // عناصر التنقل بين الصفحات
-    const navItems = document.querySelectorAll('.nav-item');
-    const itemsPage = document.getElementById('items-page');
-    const categoriesPage = document.getElementById('categories-page');
-    const settingsPage = document.getElementById('settings-page');
-    const categoriesContainer = document.getElementById('categoriesContainer');
+  } catch (error) {
+    console.error('خطأ في التحميل:', error);
+    showToast('خطأ في تحميل البيانات', 'error');
+    tableBody.innerHTML = '<tr><td colspan="9" class="loading-row">فشل التحميل</td></tr>';
+    categoriesContainer.innerHTML = '<div class="loading-row">فشل تحميل التصنيفات</div>';
+  }
+}
 
-    // =======================
-    // التنقل بين الصفحات
-    // =======================
-    navItems.forEach(item => {
-      item.addEventListener('click', (e) => {
-        e.preventDefault();
-        
-        // إزالة active من جميع العناصر
-        navItems.forEach(nav => nav.classList.remove('active'));
-        item.classList.add('active');
-        
-        // إخفاء جميع الصفحات
-        itemsPage.classList.add('hidden-page');
-        categoriesPage.classList.add('hidden-page');
-        settingsPage.classList.add('hidden-page');
-        itemsPage.classList.remove('active-page');
-        categoriesPage.classList.remove('active-page');
-        settingsPage.classList.remove('active-page');
-        
-        // عرض الصفحة المحددة
-        const page = item.dataset.page;
-        if (page === 'items') {
-          itemsPage.classList.remove('hidden-page');
-          itemsPage.classList.add('active-page');
-        } else if (page === 'categories') {
-          categoriesPage.classList.remove('hidden-page');
-          categoriesPage.classList.add('active-page');
-          renderCategories(); // عرض التصنيفات عند فتح الصفحة
-        } else if (page === 'settings') {
-          settingsPage.classList.remove('hidden-page');
-          settingsPage.classList.add('active-page');
-        }
-      });
-    });
-
-    // =======================
-    // دوال الصور
-    // =======================
-    function toggleImageOption(option) {
-      urlSection.style.display = option === 'url' ? 'block' : 'none';
-      uploadSection.style.display = option === 'upload' ? 'block' : 'none';
+async function loadCategories() {
+  try {
+    categoriesContainer.innerHTML = '<div class="loading-row">جاري تحميل التصنيفات...</div>';
+    
+    // جلب التصنيفات من السيرفر
+    const response = await fetch(SCRIPT_URL + '?action=categories');
+    const data = await response.json();
+    
+    if (data.error) throw new Error(data.error);
+    
+    categories = Array.isArray(data) ? data : [];
+    
+    // تحديث قائمة التصنيفات في نموذج الوجبات
+    updateCategorySelect();
+    
+    // عرض التصنيفات إذا كنا في صفحة التصنيفات
+    if (!categoriesPage.classList.contains('hidden-page')) {
+      renderCategories();
     }
+    
+  } catch (error) {
+    console.error('خطأ في تحميل التصنيفات:', error);
+    categoriesContainer.innerHTML = '<div class="loading-row">فشل تحميل التصنيفات</div>';
+  }
+}
 
-    uploadBtn.addEventListener('click', () => {
-      imageUpload.click();
-    });
+function updateCategorySelect() {
+  categorySelect.innerHTML = '<option value="">اختر التصنيف</option>';
+  
+  // ترتيب التصنيفات حسب sort
+  const sortedCategories = [...categories].sort((a, b) => (a.sort || 999) - (b.sort || 999));
+  
+  sortedCategories.forEach(cat => {
+    const option = document.createElement('option');
+    option.value = cat.name;
+    option.textContent = cat.name;
+    categorySelect.appendChild(option);
+  });
+}
 
-    imageUpload.addEventListener('change', async function(e) {
-      const file = e.target.files[0];
-      if (!file) return;
+function renderCategories() {
+  if (!categories || categories.length === 0) {
+    categoriesContainer.innerHTML = '<div class="loading-row">لا توجد تصنيفات</div>';
+    return;
+  }
 
-      if (!file.type.startsWith('image/')) {
-        showToast('❌ الرجاء اختيار صورة فقط', 'error');
-        return;
-      }
-
-      if (file.size > 5 * 1024 * 1024) {
-        showToast('❌ الصورة كبيرة جداً (الحد الأقصى 5 ميجابايت)', 'error');
-        return;
-      }
-
-      uploadPreview.style.display = 'flex';
-      uploadProgress.style.display = 'block';
-      progressBar.style.width = '20%';
-      progressText.textContent = 'جاري تجهيز الصورة...';
-
-      const reader = new FileReader();
-
-      reader.onload = async function(event) {
-        const base64Data = event.target.result;
-
-        previewImg.src = base64Data;
-        progressBar.style.width = '40%';
-        progressText.textContent = 'جاري الرفع إلى Drive...';
-
-        try {
-          const result = await postJson({
-            action: 'uploadImage',
-            imageData: base64Data,
-            fileName: file.name
-          });
-
-          if (result.success) {
-            progressBar.style.width = '100%';
-            progressText.textContent = '✅ تم الرفع بنجاح!';
-
-            imageUrlInput.value = result.imageUrl;
-            finalImageUrl.value = result.imageUrl;
-
-            currentImage.src = result.imageUrl;
-            currentImageContainer.style.display = 'block';
-            uploadPreview.style.display = 'none';
-
-            setTimeout(() => {
-              uploadProgress.style.display = 'none';
-            }, 1500);
-
-            showToast('✅ تم رفع الصورة إلى Drive بنجاح', 'success');
-          } else {
-            throw new Error(result.error || 'فشل الرفع');
-          }
-
-        } catch (error) {
-          console.error('خطأ:', error);
-          uploadProgress.style.display = 'none';
-          showToast('❌ فشل الرفع: ' + error.message, 'error');
-        }
-      };
-
-      reader.readAsDataURL(file);
-    });
-
-    function removeCurrentImage() {
-      currentImageContainer.style.display = 'none';
-      finalImageUrl.value = '';
-      imageUrlInput.value = '';
-      showToast('تم إزالة الصورة', 'success');
-    }
-
-    // =======================
-    // دوال التصنيفات
-    // =======================
-    function loadCategories() {
-      const uniqueCategories = [...new Set(items.map(item => item.category))];
-      categories = uniqueCategories.filter(cat => cat && cat.trim() !== '');
-
-      categorySelect.innerHTML = '<option value="">اختر التصنيف</option>';
-      categories.forEach(cat => {
-        const option = document.createElement('option');
-        option.value = cat;
-        option.textContent = cat;
-        categorySelect.appendChild(option);
-      });
-    }
-
-    function renderCategories() {
-      if (!categories || categories.length === 0) {
-        categoriesContainer.innerHTML = '<div class="loading-row">لا توجد تصنيفات</div>';
-        return;
-      }
-
-      let html = '';
-      categories.forEach(category => {
-        // حساب عدد الوجبات في هذا التصنيف
-        const itemsCount = items.filter(item => item.category === category).length;
-        
-        html += `
-          <div class="category-card">
-            <div class="category-header">
-              <span class="category-name">${category}</span>
-            </div>
-            <div class="category-stats">
-              <div class="category-stat">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-                  <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
-                </svg>
-                <span>${itemsCount} وجبات</span>
-              </div>
-            </div>
-            <div class="category-actions">
-              <button class="btn btn-secondary" onclick="openEditCategoryModal('${category}')" style="flex: 1;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-                </svg>
-                <span>تعديل</span>
-              </button>
-              <button class="btn btn-danger" onclick="deleteCategory('${category}')" style="flex: 1;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="3 6 5 6 21 6"/>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                </svg>
-                <span>حذف</span>
-              </button>
-            </div>
+  // ترتيب التصنيفات حسب sort
+  const sortedCategories = [...categories].sort((a, b) => (a.sort || 999) - (b.sort || 999));
+  
+  let html = '';
+  sortedCategories.forEach(category => {
+    // حساب عدد الوجبات في هذا التصنيف
+    const itemsCount = items.filter(item => item.category === category.name).length;
+    
+    html += `
+      <div class="category-card">
+        <div class="category-header">
+          <span class="category-name">${category.name}</span>
+        </div>
+        <div class="category-stats">
+          <div class="category-stat">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+            </svg>
+            <span>${itemsCount} وجبات</span>
           </div>
-        `;
-      });
-      categoriesContainer.innerHTML = html;
-    }
+          <div class="category-stat">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span>الترتيب: ${category.sort || 999}</span>
+          </div>
+        </div>
+        <div class="category-actions">
+          <button class="btn btn-secondary" onclick="openEditCategoryModal('${category.name}', ${category.rowIndex}, ${category.sort || 999})" style="flex: 1;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+            </svg>
+            <span>تعديل</span>
+          </button>
+          <button class="btn btn-danger" onclick="deleteCategory('${category.name}', ${category.rowIndex})" style="flex: 1;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+            <span>حذف</span>
+          </button>
+        </div>
+      </div>
+    `;
+  });
+  categoriesContainer.innerHTML = html;
+}
 
-    function openEditCategoryModal(oldName) {
-      editingOldCategoryName.value = oldName;
-      editCategoryName.value = oldName;
-      editCategoryModal.style.display = 'block';
-      editCategoryModal.setAttribute('aria-hidden', 'false');
-    }
+function openEditCategoryModal(name, rowIndex, sort) {
+  editingOldCategoryName.value = name;
+  editCategoryName.value = name;
+  document.getElementById('editCategorySort').value = sort || 999;
+  document.getElementById('editingCategoryRowIndex').value = rowIndex;
+  editCategoryModal.style.display = 'block';
+  editCategoryModal.setAttribute('aria-hidden', 'false');
+}
 
-    function closeEditCategoryModal() {
-      editCategoryModal.style.display = 'none';
-      editCategoryModal.setAttribute('aria-hidden', 'true');
-    }
+async function saveEditedCategory() {
+  const oldName = editingOldCategoryName.value;
+  const newName = editCategoryName.value.trim();
+  const sort = Number(document.getElementById('editCategorySort').value) || 999;
+  const rowIndex = Number(document.getElementById('editingCategoryRowIndex').value);
 
-    async function saveEditedCategory() {
-      const oldName = editingOldCategoryName.value;
-      const newName = editCategoryName.value.trim();
+  if (!newName) {
+    alert('الرجاء إدخال اسم التصنيف الجديد');
+    return;
+  }
 
-      if (!newName) {
-        alert('الرجاء إدخال اسم التصنيف الجديد');
-        return;
+  try {
+    showToast('🔄 جاري تحديث التصنيف...', 'success');
+
+    // تحديث التصنيف في قاعدة البيانات
+    const result = await postJson({
+      action: 'updateCategory',
+      category: {
+        name: newName,
+        sort: sort,
+        rowIndex: rowIndex
       }
+    });
 
-      if (oldName === newName) {
-        closeEditCategoryModal();
-        return;
-      }
-
-      try {
-        showToast('🔄 جاري تحديث التصنيف...', 'success');
-
-        // تحديث جميع الوجبات التي تحمل هذا التصنيف
-        let successCount = 0;
+    if (result.success) {
+      // إذا تغير الاسم، نقوم بتحديث جميع الوجبات التي تستخدم هذا التصنيف
+      if (oldName !== newName) {
+        let updatedCount = 0;
         for (const item of items) {
           if (item.category === oldName) {
             const updatedItem = { ...item, category: newName };
-            const data = await postJson({
+            await postJson({
               action: 'update',
               item: {
                 rowIndex: item.rowIndex,
                 ...updatedItem
               }
             });
-            if (data.success) successCount++;
+            updatedCount++;
           }
         }
-
-        showToast(`✅ تم تحديث ${successCount} وجبات`, 'success');
-        closeEditCategoryModal();
-        await loadItems(); // إعادة تحميل البيانات
-
-      } catch (error) {
-        console.error('خطأ:', error);
-        showToast('❌ فشل تحديث التصنيف: ' + error.message, 'error');
+        showToast(`✅ تم تحديث التصنيف و ${updatedCount} وجبات`, 'success');
+      } else {
+        showToast('✅ تم تحديث التصنيف', 'success');
       }
+      
+      closeEditCategoryModal();
+      await loadItems(); // إعادة تحميل كل البيانات
+    } else {
+      throw new Error(result.error || 'فشل التحديث');
     }
+
+  } catch (error) {
+    console.error('خطأ:', error);
+    showToast('❌ فشل تحديث التصنيف: ' + error.message, 'error');
+  }
+}
+
+async function addNewCategory() {
+  const newCat = newCategoryName.value.trim();
+  const sort = Number(document.getElementById('newCategorySort').value) || 999;
+  
+  if (!newCat) {
+    alert('الرجاء إدخال اسم التصنيف');
+    return;
+  }
+
+  try {
+    showToast('🔄 جاري إضافة التصنيف...', 'success');
+
+    const result = await postJson({
+      action: 'addCategory',
+      category: {
+        name: newCat,
+        sort: sort
+      }
+    });
+
+    if (result.success) {
+      showToast('✅ تم إضافة التصنيف بنجاح', 'success');
+      closeCategoryModal();
+      
+      // إعادة تحميل التصنيفات
+      await loadCategories();
+      
+      // إضافة التصنيف إلى قائمة الخيارات في نموذج الوجبات
+      if (result.category) {
+        const option = document.createElement('option');
+        option.value = result.category.name;
+        option.textContent = result.category.name;
+        option.selected = true;
+        categorySelect.appendChild(option);
+      }
+    } else {
+      throw new Error(result.error || 'فشل الإضافة');
+    }
+
+  } catch (error) {
+    console.error('خطأ:', error);
+    showToast('❌ فشل إضافة التصنيف: ' + error.message, 'error');
+  }
+}
+
+async function deleteCategory(categoryName, rowIndex) {
+  // التحقق من وجود وجبات في هذا التصنيف
+  const itemsInCategory = items.filter(item => item.category === categoryName);
+  
+  let confirmMessage = `هل أنت متأكد من حذف التصنيف "${categoryName}"؟`;
+  if (itemsInCategory.length > 0) {
+    confirmMessage = `هذا التصنيف يحتوي على ${itemsInCategory.length} وجبات. هل أنت متأكد من الحذف؟ (سيتم إزالة التصنيف من هذه الوجبات)`;
+  }
+  
+  if (!confirm(confirmMessage)) return;
+
+  try {
+    showToast('🔄 جاري حذف التصنيف...', 'success');
+
+    // حذف التصنيف من قاعدة البيانات
+    const result = await postJson({
+      action: 'deleteCategory',
+      rowIndex: rowIndex
+    });
+
+    if (result.success) {
+      // إزالة التصنيف من جميع الوجبات
+      let updatedCount = 0;
+      for (const item of itemsInCategory) {
+        const updatedItem = { ...item, category: '' };
+        await postJson({
+          action: 'update',
+          item: {
+            rowIndex: item.rowIndex,
+            ...updatedItem
+          }
+        });
+        updatedCount++;
+      }
+      
+      showToast(`✅ تم حذف التصنيف وتحديث ${updatedCount} وجبات`, 'success');
+      await loadItems(); // إعادة تحميل كل البيانات
+    } else {
+      throw new Error(result.error || 'فشل الحذف');
+    }
+
+  } catch (error) {
+    console.error('خطأ:', error);
+    showToast('❌ فشل حذف التصنيف: ' + error.message, 'error');
+  }
+}
 
     async function deleteCategory(categoryName) {
       // التحقق من وجود وجبات في هذا التصنيف
@@ -1717,4 +1709,5 @@
   </script>
 </body>
 </html>
+
 
